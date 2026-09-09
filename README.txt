@@ -8,4 +8,4 @@ Local preview: http://localhost:4173
 All reading content and navigation work without JavaScript.
 
 Build instructions, checks and editorial handoff notes: ../BUILD-NOTES.md
-Original project charter: ../CLAUDE.md
+
