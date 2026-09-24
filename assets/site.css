@@ -122,18 +122,18 @@ sup.sec{margin-left:3px;vertical-align:.5em;line-height:0}
   background:radial-gradient(50% 72% at 74% 46%,#23716c 0,#195755 40%,#0000 75%),linear-gradient(115deg,#0d2f31,#154547 50%,#174d4f)}
 .hero-background,.hero-scrim{position:absolute;inset:0}
 .hero-background{z-index:-3;background:radial-gradient(#ffffff17 1px,#0000 1.4px) 0 0/26px 26px;-webkit-mask:radial-gradient(60% 85% at 74% 50%,#000,#0000 78%);mask:radial-gradient(60% 85% at 74% 50%,#000,#0000 78%)}
-.hero-art{position:absolute;top:50%;right:max(8px,calc(50% - 710px));height:min(104%,1000px);aspect-ratio:.76;translate:0 -50%;animation:art-in 1.4s var(--ease) both,art-float 16s ease-in-out 1.4s infinite alternate}
+.hero-art{position:absolute;top:0;right:max(-24px,calc(50% - 730px));height:min(121%,1210px);aspect-ratio:.76;translate:0 calc(10px - 5.9%);animation:art-in 1.4s var(--ease) both,art-float 16s ease-in-out 1.4s infinite alternate}
 .hero-art img{position:absolute;inset:0;width:100%;height:100%}
 .hero-background video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
 .hero-background video[data-sources]{display:block}
 .hero-scrim{z-index:-2;background:linear-gradient(90deg,#0e3234f2,#0f3436d6 30%,#0f343657 55%,#0000 72%),linear-gradient(0deg,#0e3234b3,#0000 26%)}
-.hero-content{padding-block:40px 132px}
+.hero-content{padding-block:56px}
 .hero-content>*{animation:cover-in 700ms var(--ease) both}
 .hero-content>:nth-child(2){animation-delay:60ms}.hero-content>:nth-child(3){animation-delay:120ms}.hero-content>:nth-child(n+4){animation-delay:180ms}
 .hero h1{font-size:clamp(60px,7.2vw,108px);line-height:1.03;letter-spacing:-.06em;margin-bottom:28px}
 .hero-accent{background:linear-gradient(95deg,#f4faf7 5%,#c6f0e1 50%,#8fd6c4);-webkit-background-clip:text;background-clip:text;color:#0000}
 @keyframes art-in{from{opacity:0;scale:.96}}
-@keyframes art-float{to{translate:0 calc(-50% - 12px)}}
+@keyframes art-float{to{translate:0 calc(-2px - 5.9%)}}
 .hero-sub{font-size:20px;line-height:1.6;color:#dfeeea;max-width:560px}
 .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:34px}
 .hero .button{background:var(--mint);color:var(--ink);border-color:var(--mint);text-transform:uppercase;letter-spacing:.05em;font-size:14px;box-shadow:0 12px 32px #a7ded12e}
@@ -142,8 +142,6 @@ sup.sec{margin-left:3px;vertical-align:.5em;line-height:0}
 .hero-links a{display:inline-flex;align-items:center;gap:8px;min-height:44px;font-size:13px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#cfe8e0;text-underline-offset:6px}
 .hero-links svg{width:16px;height:16px}
 .hero :focus-visible{outline-color:var(--mint)}
-.hero-bottom{position:absolute;bottom:26px;left:0;right:0}
-.hero-bottom p{font-size:13px;line-height:1.6;color:#b9d6cf;max-width:78ch;border-top:1px solid #4d7c77;padding-top:14px}
 @keyframes cover-in{from{transform:translateY(12px)}to{transform:none}}
 
 /* ---------- homepage: the paradox, explained ---------- */
@@ -487,15 +485,13 @@ sup.sec{margin-left:3px;vertical-align:.5em;line-height:0}
   .mega-menu{left:12px;right:12px;width:auto;top:60px;max-height:calc(100svh - 76px);overflow:auto;padding:14px}
   .menu-group+ul{grid-template-columns:1fr}
   .hero{min-height:calc(100svh - 64px);max-height:none;border-radius:0 0 16px 16px}
-  .hero-art{top:1%;right:-28%;height:64%;translate:none;opacity:.9;animation:art-in 1.4s var(--ease) both}
-  .hero-scrim{background:linear-gradient(180deg,#0e323433,#0f343680 36%,#0e3234f0 64%)}
-  .hero-content{padding-block:48px 150px}
+  .hero-art{top:50%;right:-40%;height:96%;translate:0 -48%;opacity:.8;animation:art-in 1.4s var(--ease) both}
+  .hero-scrim{background:linear-gradient(180deg,#0e3234a6,#0e323499 50%,#0e3234c7)}
+  .hero-content{padding-block:40px 56px}
   .hero h1{font-size:clamp(46px,12vw,72px);margin-bottom:22px}
   .hero-sub{font-size:17px}
   .actions{margin-top:26px}
   .hero .button{padding:12px 16px;gap:12px;font-size:13px}
-  .hero-bottom{bottom:16px}
-  .hero-bottom p{font-size:12px}
   .argument-section{padding-block:60px 64px}
   .paradox-head h2{font-size:31px}
   .paradox-cards{grid-template-columns:1fr;margin-top:32px}
@@ -573,8 +569,7 @@ sup.sec{margin-left:3px;vertical-align:.5em;line-height:0}
 @media print{
   .site-header,.reading-rail,.hero-background,.enhanced,.actions,.hero-links{display:none!important}
   .hero{min-height:0;background:#fff;color:#000}
-  .hero-sub,.hero-bottom p{color:#000}
-  .hero-bottom{position:static}
+  .hero-sub{color:#000}
   .site-footer,.life-section{background:#fff;color:#000}
   .footer-mark,.to-top{display:none}
   .life-heading h2,.life-heading p,.strand-head h3{color:#000}
