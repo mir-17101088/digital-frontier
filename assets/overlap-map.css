@@ -1,0 +1,131 @@
+/* The overlap network (one-act-many-laws.html), Revision 3.
+   Subjects (square-cornered) on the left, the eight analysed laws (pills with an
+   icon) on the right. Shape, weight and the panel's words carry every state, so
+   the map reads in greyscale. Without JavaScript the table below is the map. */
+.net{margin:0 0 24px}
+.net-key{flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 24px;margin-bottom:14px;font-size:14px;color:var(--muted)}
+.net-key p:first-child{display:flex;gap:18px}
+.net-key span{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:var(--ink)}
+.key-subject::before,.key-law::before{content:"";width:13px;height:13px}
+.key-subject::before{border-radius:3px;background:#23445c}
+.key-law::before{border-radius:50%;background:var(--teal)}
+.net-layout{display:grid;gap:22px}
+.net-stage{position:relative;display:grid;grid-template-columns:minmax(0,1fr) clamp(40px,11vw,150px) minmax(0,1fr);padding:18px;background:#fbfcfd;border:1px solid #ccdae5;border-radius:16px;
+  background-image:radial-gradient(#23445c12 1px,transparent 1.2px);background-size:18px 18px}
+.net-edges{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.net-col{position:relative;z-index:1;display:flex;flex-direction:column;gap:8px;min-width:0}
+.net-subjects{grid-column:1}
+.net-laws{grid-column:3;justify-content:space-around}
+.net-node{display:flex;align-items:center;gap:10px;width:100%;min-height:48px;padding:8px 8px 8px 12px;border:1px solid;text-align:left;font-size:14px;font-weight:700;line-height:1.3;
+  transition:opacity 200ms ease,background-color 200ms ease,color 200ms ease,border-color 200ms ease,box-shadow 200ms ease,transform 160ms var(--ease)}
+.net-node:active{transform:scale(.98)}
+.net-subject{border-radius:8px;background:#f1f6fa;border-color:#c1d2e0;color:#1d3d55}
+.net-law{border-radius:999px;background:#edf6f2;border-color:#b6d3c6;color:var(--ink);padding-left:8px}
+.net-icon{display:grid;place-items:center;width:30px;height:30px;flex-shrink:0;border-radius:50%;background:#fff;color:var(--teal)}
+.net-icon svg{width:17px;height:17px}
+.net-label{min-width:0;overflow-wrap:break-word;-webkit-hyphens:manual;hyphens:manual}
+.net-count{display:grid;place-items:center;min-width:26px;height:26px;margin-left:auto;flex-shrink:0;padding:0 6px;border-radius:13px;border:1px solid currentColor;background:#fff;font-size:12px;font-variant-numeric:tabular-nums}
+.net-subject[aria-pressed=true]{background:#23445c;border-color:#23445c;color:#fff;box-shadow:0 8px 20px #23445c40}
+.net-law[aria-pressed=true]{background:var(--teal);border-color:var(--teal);color:#fff;box-shadow:0 8px 20px #174d4f40}
+.net-node[aria-pressed=true] .net-count{background:transparent}
+.net-node.is-lit{border-width:2px;padding-block:7px;box-shadow:0 6px 16px #13302f1f}
+.net-subject.is-lit{background:#fff;border-color:#23445c}
+.net-law.is-lit{background:#fff;border-color:var(--teal)}
+.net-node.is-dim{opacity:.38}
+.net-edge{fill:none;stroke:#8fa9bb;stroke-width:1.5;opacity:.55;transition:opacity 220ms ease,stroke 220ms ease,stroke-width 220ms ease}
+.net-edge.is-dim{opacity:.1}
+.net-edge.is-lit{stroke:var(--teal);stroke-width:2.8;opacity:1}
+/* The panel: what each connected law does here, and the penalty it sets. */
+.net-panel-count{display:flex;align-items:baseline;gap:8px;font-size:14px;color:var(--muted)}
+.net-panel-count strong{font-family:Montserrat,Arial,sans-serif;font-size:38px;line-height:1;letter-spacing:-.04em;color:var(--teal)}
+.net-panel h3{margin-top:8px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:23px;line-height:1.2;letter-spacing:-.03em}
+.net-panel-note{margin-top:10px;font-size:15px;color:var(--muted)}
+.net-cards{display:grid;gap:10px;margin-top:16px}
+.net-card{padding:14px 16px;border:1px solid var(--line-soft);border-left:3px solid var(--teal);border-radius:4px 12px 12px 4px;background:#fbfcfb}
+.net-card-subject{font-weight:700;font-size:15px}
+.edge-law{display:flex;flex-wrap:wrap;align-items:center;gap:2px;font-weight:700;font-size:15px}
+.edge-law a{text-underline-offset:4px}
+.edge-does{margin-top:6px;font-size:15px;line-height:1.6;color:var(--ink-soft)}
+.edge-penalties{display:grid;gap:6px;margin-top:10px}
+.edge-penalties li{padding:8px 10px;border-radius:8px;background:var(--short-wash);font-size:14px;line-height:1.45}
+.edge-penalties strong{display:block;color:#5e2a0c}
+.edge-penalties span{display:block;color:var(--ink-soft);font-size:13px}
+.term{display:grid;grid-template-columns:minmax(0,1fr) 58px;align-items:center;gap:10px;margin-top:10px}
+.term-bar{display:block;width:var(--w);height:10px;border-radius:5px;background:linear-gradient(90deg,#c07a45,#7a2e2e);transform-origin:left center;animation:term-grow 700ms var(--ease) both}
+.term-bar.life{-webkit-mask-image:linear-gradient(90deg,#000 78%,transparent);mask-image:linear-gradient(90deg,#000 78%,transparent)}
+.term-label{font-size:12px;font-weight:700;color:#5e2a0c;text-align:right}
+.net-scale{margin-top:12px;font-size:13px;color:var(--muted)}
+.net-panel .text-link{margin-top:10px}
+.net-arrow{width:17px;height:17px;background:currentColor;-webkit-mask:url(../glyph/arrow-right.svg) center/contain no-repeat;mask:url(../glyph/arrow-right.svg) center/contain no-repeat}
+@keyframes term-grow{from{transform:scaleX(0)}}
+/* Detail panel: beside the map on wide screens, a bottom sheet below 1100px. */
+.net-panel{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 34px #13302f0d}
+.sheet-body{padding:22px 22px 18px}
+.sheet-bar,.sheet-tab{display:none}
+@media(max-width:1099px){
+  .net-ready .net-panel{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;flex-direction:column;height:56dvh;max-height:92dvh;margin:0;border-bottom:0;border-radius:22px 22px 0 0;
+    box-shadow:0 -20px 50px #13302f38;transform:translateY(calc(100% + 40px));visibility:hidden;
+    transition:transform 420ms cubic-bezier(.32,.72,0,1),height 320ms cubic-bezier(.32,.72,0,1),visibility 0s linear 420ms}
+  .net-ready .net-panel[data-sheet=peek],.net-ready .net-panel[data-sheet=full]{transform:none;visibility:visible;transition:transform 420ms cubic-bezier(.32,.72,0,1),height 320ms cubic-bezier(.32,.72,0,1),visibility 0s}
+  .net-ready .net-panel.dragging{transition:none}
+  .sheet-bar{position:relative;display:flex;align-items:center;justify-content:center;flex-shrink:0;min-height:48px;touch-action:none;cursor:grab}
+  .sheet-grip{display:grid;place-items:center;width:100%;height:48px;padding:0;border:0;background:none}
+  .sheet-grip::before{content:"";width:46px;height:5px;border-radius:3px;background:#b3c3bd}
+  .sheet-close{position:absolute;right:10px;top:2px;display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:50%;background:#eef3f0;color:var(--ink)}
+  .sheet-close svg{width:18px;height:18px}
+  .sheet-body{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:0 18px 28px}
+  .net-ready .sheet-tab{position:fixed;left:50%;bottom:16px;z-index:35;display:flex;align-items:center;gap:12px;max-width:calc(100% - 28px);min-height:52px;padding:8px 8px 8px 18px;border:0;border-radius:999px;
+    background:#13302f;color:#f4faf7;box-shadow:0 12px 30px #13302f59;font-weight:700;font-size:14px;transform:translateX(-50%);animation:tab-in 320ms var(--ease) both}
+  .sheet-tab>span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .sheet-tab-cta{display:inline-flex;align-items:center;gap:6px;flex-shrink:0;padding:8px 12px;border-radius:999px;background:var(--mint);color:var(--ink);font-size:13px}
+  .sheet-tab-cta svg{width:16px;height:16px}
+  .net-ready .sheet-tab[hidden]{display:none!important}
+}
+@keyframes tab-in{from{opacity:0;transform:translate(-50%,12px)}}
+
+.net figcaption{margin:14px 0 4px}
+/* The table: the whole map in text, open without JavaScript. */
+.net-table>summary{display:inline-flex;align-items:center;min-height:44px;font-weight:700;font-size:15px;text-decoration:underline;text-underline-offset:5px}
+.overlap-scroll{margin-top:10px;background:#fff;border:1px solid var(--line);border-radius:12px}
+.overlap-table caption{padding:18px 20px 12px}
+.overlap-table th,.overlap-table td{padding:16px 18px;text-align:left;vertical-align:top;border-top:1px solid var(--line-soft)}
+.overlap-table thead th{font-size:13px;background:#edf3ef}
+.overlap-table tbody th{width:22%;font-size:15px}
+.overlap-table tbody th small{display:block;margin-top:4px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.edges{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.edge{padding:12px 14px;border:1px solid var(--line-soft);border-radius:10px;background:#fbfcfb}
+.overlap-table tr:target{background:#fff8e6}
+.overlap-table tr:target th{box-shadow:inset 4px 0 var(--teal)}
+@media(hover:hover) and (pointer:fine){
+  .net-subject:hover{border-color:#23445c;background:#fff}
+  .net-law:hover{border-color:var(--teal);background:#fff}
+  .net-node[aria-pressed=true]:hover{background:#2c5372}
+  .net-law[aria-pressed=true]:hover{background:#215f61}
+  .net-node.is-dim:hover{opacity:.8}
+}
+@media(min-width:1100px){
+  .net-layout{grid-template-columns:minmax(0,1.45fr) minmax(320px,1fr);align-items:start}
+  .net-panel{position:sticky;top:96px}
+}
+@media(max-width:767px){
+  .net-stage{padding:12px;grid-template-columns:minmax(0,1fr) 34px minmax(0,1fr)}
+  .net-node{font-size:13px;min-height:52px;padding:7px 6px 7px 9px;gap:6px}
+  .net-law{padding-left:5px}
+  .net-icon{width:24px;height:24px}
+  .net-icon svg{width:14px;height:14px}
+  .net-count{min-width:22px;height:22px;font-size:11px;padding:0 4px}
+  .net-panel h3{font-size:20px}
+  .overlap-table{min-width:0}
+  .overlap-table thead{display:none}
+  .overlap-table tr{display:block;border-top:1px solid var(--line)}
+  .overlap-table th,.overlap-table td{display:block;width:auto!important;border:0;padding:10px 14px}
+  .overlap-table tbody th{padding-top:16px;font-size:16px}
+  .overlap-scroll{overflow-x:visible}
+  .edges{grid-template-columns:1fr}
+}
+@media(max-width:420px){
+  .net-icon{display:none}
+  .net-law{padding-left:10px}
+}
+@media(prefers-reduced-motion:reduce){.net-edge,.net-node{transition:none}.term-bar{animation:none}}
+@media print{.net-stage,.net-key,.net-panel{display:none!important}}
