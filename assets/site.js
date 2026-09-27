@@ -47,7 +47,7 @@ document.querySelectorAll('.rec-item, .situation-more').forEach(detail => {
 });
 
 // Sections arrive in reading order: each group rises into place once, the first time it is seen.
-const revealable = [...document.querySelectorAll('.paradox-card, .failure-group, .strand, .laws-section tbody.rated tr, .connection-story')];
+const revealable = [...document.querySelectorAll('.beat, .strand, .laws-section tbody.rated tr, .connection-story')];
 if (revealable.length && !motionPreference.matches && 'IntersectionObserver' in window) {
   const io = new IntersectionObserver(entries => entries.forEach(entry => {
     if (!entry.isIntersecting) return;
@@ -105,47 +105,6 @@ document.addEventListener('keydown', event => {
   if (open) { open.open = false; open.querySelector('summary').focus(); }
 });
 
-const gray = document.querySelector('[data-grayscale]');
-gray?.addEventListener('click', () => {
-  const active = gray.getAttribute('aria-pressed') !== 'true';
-  gray.setAttribute('aria-pressed', String(active));
-  gray.closest('section').classList.toggle('grayscale', active);
-});
-
-// The law map: select a right's column to sort the six rated laws by it, highest risk first.
-const heat = document.querySelector('.laws-section .heatmap');
-if (heat) {
-  const body = heat.querySelector('tbody.rated');
-  const status = document.querySelector('[data-lens-status]');
-  const paperOrder = [...body.rows];
-  const severity = {2:0, 1:1, 0:2, 3:3};
-  const buttons = [], names = [];
-  let lens = null;
-  heat.querySelectorAll('thead th[data-right]').forEach(th => {
-    const button = document.createElement('button');
-    button.type = 'button'; button.className = 'lens'; button.setAttribute('aria-pressed', 'false');
-    button.append(...th.childNodes);
-    button.insertAdjacentHTML('beforeend', '<span class="lens-sort" aria-hidden="true"></span>');
-    th.append(button);
-    names.push(button.textContent.trim()); buttons.push(button);
-    button.addEventListener('click', () => apply(lens === +th.dataset.right ? null : +th.dataset.right));
-  });
-  const apply = right => {
-    lens = right;
-    const before = new Map(paperOrder.map(row => [row, row.getBoundingClientRect().top]));
-    const risk = row => severity[row.cells[right + 1].querySelector('.rating').className.match(/risk-(\d)/)[1]];
-    const rows = right === null ? paperOrder : [...paperOrder].sort((a, b) => risk(a) - risk(b) || paperOrder.indexOf(a) - paperOrder.indexOf(b));
-    body.append(...rows);
-    if (!motionPreference.matches) rows.forEach(row => {
-      const dy = before.get(row) - row.getBoundingClientRect().top;
-      if (dy) row.animate([{transform:`translateY(${dy}px)`}, {transform:'none'}], {duration:460, easing:EASE});
-    });
-    if (right === null) delete heat.dataset.lens; else heat.dataset.lens = right;
-    buttons.forEach((button, i) => button.setAttribute('aria-pressed', String(i === right)));
-    status.textContent = right === null ? 'Laws shown in white-paper order.' : `Sorted by ${names[right]}, highest risk first.`;
-  };
-}
-
 const search = document.querySelector('#glossary-search');
 if (search) {
   const entries = [...document.querySelectorAll('.glossary-entry')];
@@ -181,6 +140,9 @@ if (layers.length && 'IntersectionObserver' in window) {
 // and shows what each law does there and the penalty it sets. On wide screens that detail sits
 // beside the map; below 1100px it opens in a bottom sheet the reader can drag to resize or close.
 // Closing the sheet keeps the selection lit until the reader taps empty space or another node.
+// Revision 4: three related laws sit below the eight main laws as their own tier
+// (dashed nodes and lines). A subject's panel lists the analysed laws first, then the related ones,
+// each linked to its official text only.
 const network = document.querySelector('[data-network]');
 if (network) {
   const stage = network.querySelector('[data-net-stage]');
@@ -196,14 +158,16 @@ if (network) {
   const isSheet = () => sheetQuery.matches;
   const subjects = new Map(), laws = new Map(), edges = [];
   stage.querySelectorAll('.net-subject').forEach(node => subjects.set(node.dataset.subject, {kind:'subject', key:node.dataset.subject, node, label:node.querySelector('.net-label').textContent, edges:[]}));
-  stage.querySelectorAll('.net-law').forEach(node => laws.set(node.dataset.law, {kind:'law', key:node.dataset.law, node, label:node.querySelector('.net-label').textContent.replace(/­/g, ''), edges:[]}));
+  stage.querySelectorAll('.net-law, .net-rel').forEach(node => laws.set(node.dataset.law, {kind:'law', key:node.dataset.law, node, related:node.classList.contains('net-rel'), label:node.querySelector('.net-label').textContent.replace(/­/g, ''), edges:[]}));
+  const relLabel = network.querySelector('.rel-head')?.textContent || '';
   network.querySelectorAll('.overlap-table tbody tr[data-subject]').forEach(row => {
     const subject = subjects.get(row.dataset.subject);
-    row.querySelectorAll('li.edge').forEach(li => {
+    subject.row = row;
+    row.querySelectorAll('li.edge, li.edge-rel').forEach(li => {
       const law = laws.get(li.dataset.law);
       const link = li.querySelector('.edge-law a');
-      law.name = link.textContent; law.href = link.getAttribute('href').split('#')[0];
-      const edge = {subject, law, li, years: li.dataset.years};
+      law.name = link.textContent; law.href = law.related ? link.getAttribute('href') : link.getAttribute('href').split('#')[0];
+      const edge = {subject, law, li, years: li.dataset.years, related: law.related};
       subject.edges.push(edge); law.edges.push(edge); edges.push(edge);
     });
   });
@@ -216,7 +180,7 @@ if (network) {
       const x1 = a.right - box.left, y1 = a.top + a.height / 2 - box.top, x2 = b.left - box.left, y2 = b.top + b.height / 2 - box.top, mid = (x1 + x2) / 2;
       const path = document.createElementNS(NS, 'path');
       path.setAttribute('d', `M${x1} ${y1}C${mid} ${y1} ${mid} ${y2} ${x2} ${y2}`);
-      path.setAttribute('class', 'net-edge');
+      path.setAttribute('class', edge.related ? 'net-edge net-edge-rel' : 'net-edge');
       edge.path = path; svg.append(path);
     });
     paint(false);
@@ -254,12 +218,20 @@ if (network) {
     }
     const n = selected.edges.length;
     if (selected.kind === 'subject') {
-      body.innerHTML = `<p class="net-panel-count"><strong>${n}</strong> ${n === 1 ? 'law reaches' : 'laws reach'} this subject</p><h3 tabindex="-1">${selected.label}</h3>`
-        + `<ol class="net-cards">${selected.edges.map(edge => `<li class="net-card">${edge.li.innerHTML}${term(edge.years)}</li>`).join('')}</ol>${scale(selected.edges)}`;
+      const main = selected.edges.filter(edge => !edge.related), rel = selected.edges.filter(edge => edge.related), m = main.length;
+      const extra = selected.row.querySelector('.subject-explain'), lead = selected.row.querySelector('.subject-lead');
+      body.innerHTML = `<p class="net-panel-count"><strong>${m}</strong> ${m === 1 ? 'main law reaches' : 'main laws reach'} this subject</p><h3 tabindex="-1">${selected.label}</h3>`
+        + (lead ? lead.outerHTML : '') + (extra ? extra.outerHTML : '')
+        + `<ol class="net-cards">${main.map(edge => `<li class="net-card">${edge.li.innerHTML}${term(edge.years)}</li>`).join('')}</ol>${scale(main)}`
+        + (rel.length ? `<p class="net-rel-title">${relLabel}</p><ol class="net-cards net-cards-rel">${rel.map(edge => `<li class="net-card net-card-rel">${edge.li.innerHTML}</li>`).join('')}</ol>` : '');
+    } else if (selected.related) {
+      body.innerHTML = `<p class="net-panel-count"><strong>${n}</strong> ${n === 1 ? 'subject' : 'subjects'} related to</p><h3 tabindex="-1">${selected.name}</h3>`
+        + `<ol class="net-cards net-cards-rel">${selected.edges.map(edge => `<li class="net-card net-card-rel"><p class="net-card-subject">${edge.subject.label}</p>${edge.li.querySelector('.edge-does').outerHTML}</li>`).join('')}</ol>`
+        + `<a class="text-link" href="${selected.href}">Read the official law <span class="net-arrow net-arrow-out" aria-hidden="true"></span></a>`;
     } else {
       body.innerHTML = `<p class="net-panel-count"><strong>${n}</strong> ${n === 1 ? 'subject' : 'subjects'} reached by</p><h3 tabindex="-1">${selected.name}</h3>`
         + `<ol class="net-cards">${selected.edges.map(edge => `<li class="net-card"><p class="net-card-subject">${edge.subject.label}${edge.li.querySelector('.sec')?.outerHTML || ''}</p>`
-        + `${edge.li.querySelector('.edge-does').outerHTML}${edge.li.querySelector('.edge-penalties')?.outerHTML || ''}${term(edge.years)}</li>`).join('')}</ol>${scale(selected.edges)}`
+        + `${edge.li.querySelector('.edge-does').outerHTML}${edge.li.querySelector('.edge-answers')?.outerHTML || ''}${edge.li.querySelector('.edge-penalties')?.outerHTML || ''}${term(edge.years)}</li>`).join('')}</ol>${scale(selected.edges)}`
         + `<a class="text-link" href="${selected.href}">Open the ${selected.name} guide <span class="net-arrow" aria-hidden="true"></span></a>`;
     }
     body.scrollTop = 0;
