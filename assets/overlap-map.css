@@ -10,7 +10,6 @@
 .key-subject::before{border-radius:3px;background:#23445c}
 .key-law::before{border-radius:50%;background:var(--teal)}
 /* Revision 4: related laws the paper does not analyse. Dashed outline and dashed lines, in words too. */
-.key-rel::before{content:"";width:20px;height:0;border-top:2px dashed #5b7385}
 .net-layout{display:grid;gap:22px}
 .net-stage{position:relative;display:grid;grid-template-columns:minmax(0,1fr) clamp(40px,11vw,150px) minmax(0,1fr);padding:18px;background:#fbfcfd;border:1px solid #ccdae5;border-radius:16px;
   background-image:radial-gradient(#23445c12 1px,transparent 1.2px);background-size:18px 18px}
@@ -37,13 +36,6 @@
 .net-edge{fill:none;stroke:#8fa9bb;stroke-width:1.5;opacity:.55;transition:opacity 220ms ease,stroke 220ms ease,stroke-width 220ms ease}
 .net-edge.is-dim{opacity:.1}
 .net-edge.is-lit{stroke:var(--teal);stroke-width:2.8;opacity:1}
-.net-edge-rel{stroke-dasharray:5 6}
-.net-edge-rel.is-lit{stroke:#4f6a7c;stroke-width:2.2}
-.net-rel-head{margin-top:10px;padding:12px 4px 0;border-top:1px dashed #b9c9d4;font-size:12px;font-weight:700;line-height:1.35;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
-.net-rel{border-radius:999px;border-style:dashed;background:#fff;border-color:#8ea4b4;color:#3a5566;padding-left:8px}
-.net-rel .net-icon{background:#eef2f5;color:#5b7385}
-.net-rel[aria-pressed=true]{background:#4f6a7c;border-color:#4f6a7c;border-style:solid;color:#fff;box-shadow:0 8px 20px #4f6a7c40}
-.net-rel.is-lit{background:#fff;border-color:#4f6a7c}
 /* Plain words for legal terms, a reading note, and the related laws in the panel and the table. */
 .subject-explain{display:grid;gap:8px;margin:14px 0 4px}
 .subject-explain div{padding:10px 12px;border:1px solid #d3e0ea;border-radius:8px;background:#f1f6fa}
@@ -51,24 +43,6 @@
 .subject-explain dd{font-size:14px;line-height:1.5;color:var(--ink-soft)}
 .subject-lead{display:flex;align-items:flex-start;gap:10px;margin-top:12px;padding:12px 14px;border:1px solid #ecd9a8;border-radius:10px;background:#fff8e6;font-size:15px;line-height:1.55;color:#4d3b0c}
 .subject-lead .g{width:18px;height:18px;flex-shrink:0;margin-top:3px}
-/* Revision 5: each law answers two plain questions. Word and icon carry the answer; tint supports it. */
-.edge-answers{display:grid;gap:8px;margin-top:10px}
-.edge-answers li{padding:10px 12px;border:1px solid var(--line-soft);border-radius:10px;background:#fff}
-.ea-what{margin-bottom:6px;font-size:14px;font-weight:700;line-height:1.35}
-.ea-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 10px;padding-block:3px;font-size:14px;line-height:1.35}
-.ea-q{color:var(--ink-soft)}
-.ans{display:inline-flex;align-items:center;gap:6px;padding:3px 10px 3px 7px;border-radius:999px;font-size:13px;font-weight:700;white-space:nowrap}
-.ans .g{width:16px;height:16px}
-.ans-risk{background:var(--short-wash);color:#6b3a14;border:1px solid #e3c7a8}
-.ans-safe{background:var(--protect-wash);color:var(--protect);border:1px solid #bcdcc8}
-.rel-edges{margin-top:14px}
-.rel-head,.net-rel-title,.net-rel-flag{font-size:12px;font-weight:700;line-height:1.4;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
-.net-rel-title{margin-top:20px;padding-top:14px;border-top:1px dashed #b9c9d4}
-.net-rel-flag{margin-top:8px}
-.edges-rel{margin-top:8px}
-.edge-rel{padding:12px 14px;border:1px dashed #a9bccb;border-radius:10px;background:#fff}
-.net-card-rel{border:1px dashed #a9bccb;border-left:3px dashed #5b7385;background:#fff}
-.net-arrow.net-arrow-out{-webkit-mask-image:url(../glyph/arrow-up-right.svg);mask-image:url(../glyph/arrow-up-right.svg)}
 /* The panel: what each connected law does here, and the penalty it sets. */
 .net-panel-count{display:flex;align-items:baseline;gap:8px;font-size:14px;color:var(--muted)}
 .net-panel-count strong{font-family:Montserrat,Arial,sans-serif;font-size:38px;line-height:1;letter-spacing:-.04em;color:var(--teal)}
@@ -119,7 +93,6 @@
 
 .net figcaption{margin:14px 0 4px}
 /* The table: the whole map in text, open without JavaScript. */
-.net-table>summary{display:inline-flex;align-items:center;min-height:44px;font-weight:700;font-size:15px;text-decoration:underline;text-underline-offset:5px}
 .overlap-scroll{margin-top:10px;background:#fff;border:1px solid var(--line);border-radius:12px}
 .overlap-table caption{padding:18px 20px 12px}
 .overlap-table th,.overlap-table td{padding:16px 18px;text-align:left;vertical-align:top;border-top:1px solid var(--line-soft)}
@@ -133,8 +106,6 @@
 @media(hover:hover) and (pointer:fine){
   .net-subject:hover{border-color:#23445c;background:#fff}
   .net-law:hover{border-color:var(--teal);background:#fff}
-  .net-rel:hover{border-color:#4f6a7c}
-  .net-rel[aria-pressed=true]:hover{background:#5d788a}
   .net-node[aria-pressed=true]:hover{background:#2c5372}
   .net-law[aria-pressed=true]:hover{background:#215f61}
   .net-node.is-dim:hover{opacity:.8}

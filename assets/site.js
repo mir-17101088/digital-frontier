@@ -140,9 +140,8 @@ if (layers.length && 'IntersectionObserver' in window) {
 // and shows what each law does there and the penalty it sets. On wide screens that detail sits
 // beside the map; below 1100px it opens in a bottom sheet the reader can drag to resize or close.
 // Closing the sheet keeps the selection lit until the reader taps empty space or another node.
-// Revision 4: three related laws sit below the eight main laws as their own tier
-// (dashed nodes and lines). A subject's panel lists the analysed laws first, then the related ones,
-// each linked to its official text only.
+// Revision 6: only the eight main laws appear. The table beneath is the map's data and, without
+// JavaScript, its text alternative; once the map is drawn it is hidden (there is no table toggle).
 const network = document.querySelector('[data-network]');
 if (network) {
   const stage = network.querySelector('[data-net-stage]');
@@ -158,16 +157,15 @@ if (network) {
   const isSheet = () => sheetQuery.matches;
   const subjects = new Map(), laws = new Map(), edges = [];
   stage.querySelectorAll('.net-subject').forEach(node => subjects.set(node.dataset.subject, {kind:'subject', key:node.dataset.subject, node, label:node.querySelector('.net-label').textContent, edges:[]}));
-  stage.querySelectorAll('.net-law, .net-rel').forEach(node => laws.set(node.dataset.law, {kind:'law', key:node.dataset.law, node, related:node.classList.contains('net-rel'), label:node.querySelector('.net-label').textContent.replace(/­/g, ''), edges:[]}));
-  const relLabel = network.querySelector('.rel-head')?.textContent || '';
+  stage.querySelectorAll('.net-law').forEach(node => laws.set(node.dataset.law, {kind:'law', key:node.dataset.law, node, label:node.querySelector('.net-label').textContent.replace(/­/g, ''), edges:[]}));
   network.querySelectorAll('.overlap-table tbody tr[data-subject]').forEach(row => {
     const subject = subjects.get(row.dataset.subject);
     subject.row = row;
-    row.querySelectorAll('li.edge, li.edge-rel').forEach(li => {
+    row.querySelectorAll('li.edge').forEach(li => {
       const law = laws.get(li.dataset.law);
       const link = li.querySelector('.edge-law a');
-      law.name = link.textContent; law.href = law.related ? link.getAttribute('href') : link.getAttribute('href').split('#')[0];
-      const edge = {subject, law, li, years: li.dataset.years, related: law.related};
+      law.name = link.textContent; law.href = link.getAttribute('href').split('#')[0];
+      const edge = {subject, law, li, years: li.dataset.years};
       subject.edges.push(edge); law.edges.push(edge); edges.push(edge);
     });
   });
@@ -180,7 +178,7 @@ if (network) {
       const x1 = a.right - box.left, y1 = a.top + a.height / 2 - box.top, x2 = b.left - box.left, y2 = b.top + b.height / 2 - box.top, mid = (x1 + x2) / 2;
       const path = document.createElementNS(NS, 'path');
       path.setAttribute('d', `M${x1} ${y1}C${mid} ${y1} ${mid} ${y2} ${x2} ${y2}`);
-      path.setAttribute('class', edge.related ? 'net-edge net-edge-rel' : 'net-edge');
+      path.setAttribute('class', 'net-edge');
       edge.path = path; svg.append(path);
     });
     paint(false);
@@ -218,20 +216,14 @@ if (network) {
     }
     const n = selected.edges.length;
     if (selected.kind === 'subject') {
-      const main = selected.edges.filter(edge => !edge.related), rel = selected.edges.filter(edge => edge.related), m = main.length;
       const extra = selected.row.querySelector('.subject-explain'), lead = selected.row.querySelector('.subject-lead');
-      body.innerHTML = `<p class="net-panel-count"><strong>${m}</strong> ${m === 1 ? 'main law reaches' : 'main laws reach'} this subject</p><h3 tabindex="-1">${selected.label}</h3>`
+      body.innerHTML = `<p class="net-panel-count"><strong>${n}</strong> ${n === 1 ? 'main law reaches' : 'main laws reach'} this subject</p><h3 tabindex="-1">${selected.label}</h3>`
         + (lead ? lead.outerHTML : '') + (extra ? extra.outerHTML : '')
-        + `<ol class="net-cards">${main.map(edge => `<li class="net-card">${edge.li.innerHTML}${term(edge.years)}</li>`).join('')}</ol>${scale(main)}`
-        + (rel.length ? `<p class="net-rel-title">${relLabel}</p><ol class="net-cards net-cards-rel">${rel.map(edge => `<li class="net-card net-card-rel">${edge.li.innerHTML}</li>`).join('')}</ol>` : '');
-    } else if (selected.related) {
-      body.innerHTML = `<p class="net-panel-count"><strong>${n}</strong> ${n === 1 ? 'subject' : 'subjects'} related to</p><h3 tabindex="-1">${selected.name}</h3>`
-        + `<ol class="net-cards net-cards-rel">${selected.edges.map(edge => `<li class="net-card net-card-rel"><p class="net-card-subject">${edge.subject.label}</p>${edge.li.querySelector('.edge-does').outerHTML}</li>`).join('')}</ol>`
-        + `<a class="text-link" href="${selected.href}">Read the official law <span class="net-arrow net-arrow-out" aria-hidden="true"></span></a>`;
+        + `<ol class="net-cards">${selected.edges.map(edge => `<li class="net-card">${edge.li.innerHTML}${term(edge.years)}</li>`).join('')}</ol>${scale(selected.edges)}`;
     } else {
       body.innerHTML = `<p class="net-panel-count"><strong>${n}</strong> ${n === 1 ? 'subject' : 'subjects'} reached by</p><h3 tabindex="-1">${selected.name}</h3>`
         + `<ol class="net-cards">${selected.edges.map(edge => `<li class="net-card"><p class="net-card-subject">${edge.subject.label}${edge.li.querySelector('.sec')?.outerHTML || ''}</p>`
-        + `${edge.li.querySelector('.edge-does').outerHTML}${edge.li.querySelector('.edge-answers')?.outerHTML || ''}${edge.li.querySelector('.edge-penalties')?.outerHTML || ''}${term(edge.years)}</li>`).join('')}</ol>${scale(selected.edges)}`
+        + `${edge.li.querySelector('.edge-does').outerHTML}${edge.li.querySelector('.edge-penalties')?.outerHTML || ''}${term(edge.years)}</li>`).join('')}</ol>${scale(selected.edges)}`
         + `<a class="text-link" href="${selected.href}">Open the ${selected.name} guide <span class="net-arrow" aria-hidden="true"></span></a>`;
     }
     body.scrollTop = 0;
@@ -260,7 +252,7 @@ if (network) {
     if (!isSheet() && item === selected) item = null;
     select(item);
     // A chosen subject is shareable. (Only after a click: writing the address during load would make
-    // the browser expand the table and jump to that row.)
+    // the browser jump to that row.)
     history.replaceState(null, '', selected && selected.kind === 'subject' ? '#subject-' + selected.key : location.pathname);
     if (!isSheet()) return;
     setSheet(selected ? (sheet === 'full' ? 'full' : 'peek') : 'closed');
@@ -308,19 +300,18 @@ if (network) {
   });
   sheetQuery.addEventListener('change', () => { setSheet('closed'); draw(); });
   stage.hidden = false; panel.hidden = false; network.classList.add('net-ready');
-  const table = network.querySelector('.net-table');
-  table.open = false;
+  network.querySelector('[data-net-table]').hidden = true;
   const fromHash = subjects.get((location.hash.match(/^#subject-([\w-]+)$/) || [])[1]);
   draw();
   // It opens on one subject so the idea is visible at once; on a phone the detail waits behind the tab.
   select(fromHash || subjects.get('speech'), false);
   setSheet('closed');
-  // A link to a subject lands on the map, not the table the browser would otherwise expand.
-  if (fromHash) addEventListener('load', () => { table.open = false; network.scrollIntoView({block:'start'}); }, {once:true});
+  // A link to a subject lands on the map (its table row is hidden once the map is drawn).
+  if (fromHash) addEventListener('load', () => network.scrollIntoView({block:'start'}), {once:true});
   addEventListener('hashchange', () => {
     const target = subjects.get((location.hash.match(/^#subject-([\w-]+)$/) || [])[1]);
     if (!target) return;
-    table.open = false; select(target); setSheet('closed'); network.scrollIntoView({block:'start'});
+    select(target); setSheet('closed'); network.scrollIntoView({block:'start'});
   });
   new ResizeObserver(() => draw()).observe(stage);
 }

@@ -152,7 +152,7 @@ sup.sec{margin-left:3px;vertical-align:.5em;line-height:0}
    marks. The third beat is the turn (amber), the fourth the resolution (teal). Words and position carry
    the sequence; colour only supports it. */
 .story-section{background:#fbfcfa;border-bottom:1px solid #d6e1da;padding-block:96px 104px}
-.story-section h2{font-size:clamp(34px,4vw,56px);line-height:1.08;color:#16392f;max-width:14ch}
+.story-section h2{font-size:clamp(34px,4vw,56px);line-height:1.08;color:#16392f;max-width:21ch;text-wrap:balance}
 .beats{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px;margin-top:56px}
 .beats::before{content:"";position:absolute;top:27px;left:28px;right:calc(25% - 4px);height:2px;background:linear-gradient(90deg,#9cc7b8,#9cc7b8 55%,#d9a877 70%,var(--teal))}
 .beat{position:relative}
@@ -380,16 +380,17 @@ sup.sec{margin-left:3px;vertical-align:.5em;line-height:0}
 .cross-next>span>span{font-size:15px;max-width:62ch;color:#3e5c6e}
 .cross-next>svg{width:26px;height:26px;transition:transform 200ms var(--ease)}
 .method .content-section{border-top:1px solid var(--line);padding-block:40px}
-/* Revision 4: what every rating is measured against, before anything else. */
-.measured{padding-bottom:40px}
-.measured h2{font-size:clamp(26px,3vw,36px);line-height:1.15;color:#16392f}
-.measured-line{margin-top:12px;font-size:18px;color:var(--ink-soft)}
+/* Revision 7: what every rating is measured against closes the Benchmarks section; a third, full-width card opens the comparable laws. */
+.measured{margin-top:30px;padding-top:28px;border-top:1px solid var(--line-soft)}
+.measured h3{font-size:clamp(21px,2.2vw,26px);line-height:1.2;color:#16392f}
+.measured-line{margin-top:10px;font-size:17px;color:var(--ink-soft)}
 .measured-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
 .measured-card{display:grid;grid-template-columns:48px minmax(0,1fr);align-content:start;column-gap:16px;row-gap:4px;padding:20px;background:#fff;border:1px solid var(--line);border-radius:12px;text-decoration:none;transition:border-color 180ms ease,transform 200ms var(--ease)}
 .mc-icon{grid-row:span 2;display:grid;place-items:center;width:48px;height:48px;border-radius:12px;background:#23445c;color:#fff}
 .mc-icon .g{width:24px;height:24px}
 .measured-card strong{font-family:Montserrat,Arial,sans-serif;font-size:17px;line-height:1.3;letter-spacing:-.02em;color:#16392f}
 .measured-card>span:last-child{font-size:15px;line-height:1.55;color:var(--muted)}
+.mc-wide{grid-column:1/-1}
 .class-bench{display:flex;align-items:center;gap:10px;margin-bottom:16px;font-weight:700;color:#23445c}
 .class-bench .g{width:20px;height:20px;flex-shrink:0}
 .we-gaps-label{margin-top:18px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--short)}
@@ -423,8 +424,11 @@ sup.sec{margin-left:3px;vertical-align:.5em;line-height:0}
 .paper-link .f-ico{background:#0f3638;color:#c9f0e2}
 .f-go{width:16px;height:16px;flex-shrink:0;background:currentColor;-webkit-mask:url(../glyph/arrow-up-right.svg) center/contain no-repeat;mask:url(../glyph/arrow-up-right.svg) center/contain no-repeat;transition:transform 220ms var(--ease)}
 .footer-nav a:active{transform:scale(.97)}
-.footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px 24px;padding:24px 0 28px;border-top:1px solid #ffffff21;font-size:13px;color:#b8d5cd}
-.footer-mark{display:flex;justify-content:center;gap:.26em;max-width:none;margin:0 0 -.17em;padding:0 16px;font:800 7.1vw/1 Montserrat,Arial,sans-serif;letter-spacing:-.05em;white-space:nowrap;color:transparent;-webkit-user-select:none;user-select:none;pointer-events:none}
+.footer-bottom{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:14px 24px;padding:24px 0 28px;border-top:1px solid #ffffff21;font-size:13px;color:#b8d5cd}
+/* The byline sits bottom left, under the logo: one credit per line, the role quiet and the name bright. */
+.byline{display:grid;gap:6px;margin:0;padding:0;list-style:none;font-size:14px;line-height:1.4;font-weight:700;color:#eef7f3}
+.by-role{font-weight:400;color:#b8d5cd}
+.footer-mark{display:flex;justify-content:center;gap:.26em;max-width:none;margin:0 0 -.17em;padding:0 16px;font:800 5.3vw/1 Montserrat,Arial,sans-serif;letter-spacing:-.05em;white-space:nowrap;color:transparent;-webkit-user-select:none;user-select:none;pointer-events:none}
 .footer-mark span{background:linear-gradient(180deg,#ffffff38 8%,#ffffff00 86%);-webkit-background-clip:text;background-clip:text}
 .site-footer :focus-visible{outline-color:var(--mint)}
 /* Back to top: appears a screen down; the ring fills as the page is read. */
@@ -569,11 +573,11 @@ sup.sec{margin-left:3px;vertical-align:.5em;line-height:0}
   .footer-main{align-items:stretch;gap:36px;padding-bottom:44px}
   .footer-brand img{width:164px;height:54px}
   .footer-brand p{margin-top:18px;font-size:22px}
-  .footer-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+  .footer-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
   .footer-nav a{flex-direction:column;justify-content:flex-start;gap:10px;min-height:108px;padding:16px 8px 14px;border-radius:20px;text-align:center;font-size:13.5px}
   .footer-nav .paper-link{grid-column:1/-1;flex-direction:row;justify-content:flex-start;min-height:60px;padding:8px 22px 8px 8px;border-radius:999px;text-align:left;font-size:15px}
   .paper-link .f-go{margin-left:auto}
-  .footer-bottom{flex-direction:column;gap:6px;padding:22px 0 26px}
+  .footer-bottom{flex-direction:column;align-items:flex-start;gap:14px;padding:22px 0 26px}
   .footer-mark{flex-direction:column;gap:.04em;padding:0 20px;font-size:12.4vw;line-height:.94;margin-bottom:-.1em}
   .footer-mark span{background-image:linear-gradient(180deg,#ffffff38 10%,#ffffff0a 92%)}
 }
