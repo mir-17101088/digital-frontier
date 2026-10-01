@@ -309,7 +309,7 @@ sup.sec{margin-left:3px;vertical-align:.5em;line-height:0}
 .recommendations.props-glance{padding-block:0 104px}
 .recommendations .glance-grid{margin-bottom:26px}
 .connections .section-heading p{max-width:61ch}
-.connection-stories{display:grid;grid-template-columns:1.1fr 1fr;gap:22px}
+.connection-stories{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
 .connection-story{text-decoration:none;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow 220ms ease,transform 220ms var(--ease)}
 .security-story{background:var(--teal);color:#f5f7f4;border:1px solid var(--teal)}
 .overlap-story{background:#e0eaf2;color:#183e56;border:1px solid #b8cddc}
@@ -333,6 +333,28 @@ sup.sec{margin-left:3px;vertical-align:.5em;line-height:0}
 .story-cta svg{transition:transform 200ms var(--ease)}
 .motion-enabled .security-diagram i{transform:scaleX(0);transition:transform 650ms var(--ease)}
 .motion-enabled.is-visible .security-diagram i{transform:scaleX(1)}
+/* Revision 11: the colonial governance logic, the third card. An archive in deep oxblood: a ledger-ruled strip,
+   the 1860 code stamped as a seal, a gold rule running through 1965 to a bright "Today". Oxblood and aged gold
+   read as sealing wax, red tape and old registers; the dates and words carry the meaning, not the colour. */
+.colonial-story{background:linear-gradient(160deg,#4e241c,#391812);color:#f7e9dc;border:1px solid #4e241c}
+.colonial-diagram{position:relative;gap:0;background:#5a2a20;border-bottom:1px solid #7a4434;
+  background-image:linear-gradient(90deg,transparent 30px,#e3b07240 30px 31px,transparent 31px),repeating-linear-gradient(transparent 0 25px,#ffffff10 25px 26px)}
+.colonial-diagram>span{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.colonial-diagram strong{font:800 22px/1 Montserrat,Arial,sans-serif;letter-spacing:-.04em;color:#f7e9dc}
+.colonial-diagram b{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#e9c9ad;line-height:1.3}
+.cd-seal{flex-shrink:0;justify-content:center;width:104px;height:104px;border-radius:50%;border:2px solid #e3b072;outline:1px dashed #e3b07299;outline-offset:-8px;background:radial-gradient(#6a3226,#53261d);transform:rotate(-8deg);box-shadow:0 6px 18px #1a08054d}
+.cd-seal strong{font-size:26px;color:#f3c98f}
+.cd-seal b{font-size:9px;letter-spacing:.1em}
+.cd-mid{width:88px}
+.cd-now{width:92px}
+.cd-now strong{padding:7px 12px;border-radius:999px;background:#e3b072;color:#3d1a13}
+.colonial-diagram i{height:2px;width:26px;background:#e3b072;transform-origin:left center}
+.colonial-story p{color:#ecd5c3}
+.colonial-story .story-cta{border-color:#7a4434;color:#f3c98f}
+.motion-enabled .colonial-diagram i{transform:scaleX(0);transition:transform 650ms var(--ease) 120ms}
+.motion-enabled.is-visible .colonial-diagram i{transform:scaleX(1)}
+.motion-enabled .cd-seal{transform:rotate(-8deg) scale(1.25);opacity:0;transition:transform 520ms cubic-bezier(.34,1.56,.64,1),opacity 260ms ease}
+.motion-enabled.is-visible .cd-seal{transform:rotate(-8deg);opacity:1}
 .motion-enabled .mm-edges path{stroke-dashoffset:260;stroke-dasharray:260;transition:stroke-dashoffset 900ms var(--ease)}
 .motion-enabled.is-visible .mm-edges path{stroke-dashoffset:0}
 .layer-label{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;background:#dce8e4;color:var(--ink);padding:5px 10px;border-radius:4px;margin-bottom:18px}
@@ -503,6 +525,9 @@ sup.sec{margin-left:3px;vertical-align:.5em;line-height:0}
   .footer-main{flex-direction:column;align-items:flex-start}
   .footer-nav{justify-content:flex-start;max-width:none}
 }
+@media(max-width:1023px){
+  .connection-stories{grid-template-columns:1fr}
+}
 @media(max-width:767px){
   body{font-size:16px}
   .wrap{width:calc(100% - 40px)}
@@ -595,7 +620,8 @@ sup.sec{margin-left:3px;vertical-align:.5em;line-height:0}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
   .hero-background video{display:none}
-  .motion-enabled .security-diagram i{transform:none}
+  .motion-enabled .security-diagram i,.motion-enabled .colonial-diagram i{transform:none}
+  .motion-enabled .cd-seal{transform:rotate(-8deg);opacity:1;transition:none}
   .motion-enabled .mm-edges path{stroke-dashoffset:0}
   .will-reveal{opacity:1;transform:none}
 }

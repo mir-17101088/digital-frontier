@@ -533,3 +533,128 @@ span.jurisdiction .flags,.juris-name .flags{margin-right:8px}
   .pg-body{padding:14px 14px 18px}
 }
 @media(prefers-reduced-motion:reduce){.js .thread-line::before,.js .station,.js .station::after{animation:none}}
+
+/* ---------- the colonial governance logic (colonial-logic.html), Revision 10 ----------
+   A dark band reads like a ledger: one rail through three eras, each era named in words
+   and given its own accent (the name, not the colour, carries the meaning). The amendments
+   sit under their era with the year the paper gives. Below: then against now, what the old
+   code still carries, the same pattern in the cyber law's predecessors, and where sedition began. */
+.era-band{position:relative;isolation:isolate;overflow:hidden;padding-block:64px 76px;color:#eef6f3;
+  background:radial-gradient(760px 420px at 6% -12%,#5a4a32 0%,transparent 60%),linear-gradient(#162f30,#0e3032)}
+.era-band::before{content:"";position:absolute;inset:0;z-index:-1;background-image:repeating-linear-gradient(#ffffff0b 0 1px,transparent 1px 34px);-webkit-mask-image:linear-gradient(#000,transparent 85%);mask-image:linear-gradient(#000,transparent 85%)}
+.era-band h2{color:#f4faf7;font-size:clamp(28px,3vw,40px)}
+.era-lede{margin-top:10px;font-size:16px;color:#c9ded7}
+.era-band :focus-visible{outline-color:var(--mint)}
+.era-rail{display:grid;grid-template-columns:2fr 3fr 2fr;gap:18px;margin-top:44px}
+.era{--era:#f2ca92;position:relative;padding-top:22px}
+.era-pakistan{--era:#aacff1}
+.era-bangladesh{--era:#8fdac3}
+.era::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;border-radius:2px;background:var(--era);transform-origin:left center}
+.era-name{position:absolute;top:-14px;left:0}
+.era-name span{display:inline-block;padding:3px 10px;border-radius:4px;background:var(--era);color:#0e3234;font:800 12px/1.5 Montserrat,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.era-items{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:16px;margin-top:16px}
+.era-item{position:relative;padding-top:4px}
+.era-item::before{content:"";position:absolute;left:0;top:-24px;width:12px;height:12px;border-radius:50%;background:#0e3234;border:3px solid var(--era)}
+.era-when{display:block;font:800 30px/1 Montserrat,Arial,sans-serif;letter-spacing:-.04em;color:var(--era)}
+.era-when small{margin-left:6px;font:700 12px Lato,Arial,sans-serif;letter-spacing:0;color:#c9ded7}
+.era-item h3{margin-top:10px;font-size:16px;line-height:1.35;color:#f4faf7}
+.era-item h3 a{color:inherit}
+.era-item>.sec{display:inline-block;margin:6px 0 0;color:#c9ded7;background:#ffffff14;border-color:#ffffff2e}
+.era-item p{margin-top:6px;font-size:14px;line-height:1.6;color:#cfe3dc}
+.era-now{padding:12px 14px 14px;border:1px solid #8fdac366;border-radius:12px;background:#8fdac314}
+.era-now::before{left:14px}
+.js .era::before{animation:thread-draw 900ms var(--ease) both}
+.js .era-pakistan::before{animation-delay:260ms}
+.js .era-bangladesh::before{animation-delay:520ms}
+.js .era-item{animation:station-rise 560ms var(--ease) both}
+.js .era-pakistan .era-item{animation-delay:280ms}
+.js .era-bangladesh .era-item{animation-delay:540ms}
+/* Then and now: two panels, hinged by what connects them. */
+.then-now{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:18px;align-items:stretch}
+.tn{padding:26px 26px 24px;border:1px solid;border-radius:14px}
+.tn>svg{width:42px;height:42px;padding:9px;border-radius:10px}
+.tn-then{background:var(--short-wash);border-color:#e3cdb7}
+.tn-then>svg{background:#f1dac4;color:var(--short)}
+.tn-now{background:var(--analysis);border-color:var(--analysis-line)}
+.tn-now>svg{background:#d3e1ee;color:var(--analysis-ink)}
+.tn-tag{margin-top:16px;font-size:13px;font-weight:700;color:var(--muted)}
+.tn h3{margin-top:4px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:24px;letter-spacing:-.03em}
+.tn p:last-child{margin-top:10px;font-size:16px;line-height:1.65;color:var(--ink-soft)}
+.tn-hinge{display:grid;place-items:center}
+.tn-hinge span{display:inline-flex;flex-direction:column;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--teal);text-align:center;max-width:9ch}
+.tn-hinge svg{width:40px;height:40px;padding:10px;border-radius:50%;background:var(--teal);color:#fff}
+/* What it still carries: one large card, two beside it, and what still protects you beneath. */
+.carries{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);grid-template-areas:"a b" "a c" "p p";gap:14px}
+.carry{padding:22px 22px 20px;background:#fff;border:1px solid var(--line);border-radius:14px}
+.carry-dissent{grid-area:a;display:flex;flex-direction:column;align-items:flex-start;padding:30px 28px;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(135deg,#c9905b,var(--line) 55%) border-box;border:1px solid transparent}
+.carry-morality{grid-area:b}
+.carry-commerce{grid-area:c}
+.carry>svg{width:40px;height:40px;padding:9px;border-radius:10px;background:var(--short-wash);color:var(--short)}
+.carry-dissent>svg{width:56px;height:56px;padding:13px;margin-bottom:auto}
+.carry-dissent>svg+h3{margin-top:40px}
+.carry h3{display:inline;font-size:20px;line-height:1.3}
+.carry-dissent h3{font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:clamp(24px,2.4vw,30px);letter-spacing:-.035em}
+.carry h3 a{text-decoration-color:#c9905b}
+.carry>svg+h3{display:block;margin-top:14px}
+.carry>.sec{margin-left:0;margin-top:6px;display:inline-block}
+.carry p{margin-top:8px;font-size:15px;line-height:1.65;color:var(--ink-soft)}
+.carry-dissent p{font-size:17px}
+.still-protects{grid-area:p;border-radius:14px;padding:18px 20px 16px}
+.still-protects .pf-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 22px}
+/* The pattern repeats: the cyber law's line of predecessors. */
+.lineage{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;counter-reset:lin}
+.lineage::before{content:"";position:absolute;left:8%;right:8%;top:22px;height:2px;background:repeating-linear-gradient(90deg,var(--line) 0 8px,transparent 8px 14px)}
+.lin-step{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
+.lin-year{position:relative;display:grid;place-items:center;min-width:76px;height:44px;padding-inline:12px;border-radius:999px;background:#e4efea;border:1px solid var(--line);font:800 16px Montserrat,Arial,sans-serif;color:var(--ink-soft)}
+.lin-name{font-size:14px;line-height:1.45;color:var(--ink-soft)}
+.lin-now .lin-year{background:var(--teal);border-color:var(--teal);color:#fff;box-shadow:0 0 0 6px #174d4f1f}
+.lin-now a{font-size:15px;font-weight:700;line-height:1.45}
+.lineage-fig figcaption{margin-top:26px;padding:20px 22px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px}
+.lin-verdict{display:flex;gap:12px;font-size:18px;font-weight:700;line-height:1.5;color:var(--ink)}
+.lin-verdict svg{width:26px;height:26px;margin-top:2px;color:var(--teal)}
+.lineage-fig figcaption>p:last-child{margin-top:8px;padding-left:38px;font-size:15px;color:var(--ink-soft)}
+.echo-block{margin-top:44px}
+.echo-block>h3{font-size:22px}
+.echo-lead{margin-top:6px;color:var(--muted)}
+.echoes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}
+.echo{--echo:#c9905b;padding:20px 20px 18px;background:#fff;border:1px solid var(--line);border-top:4px solid var(--echo);border-radius:12px}
+.echo-bta{--echo:#6f9cc4}
+.echo-cpa{--echo:#4e9e86}
+.echo-year{font:800 28px/1 Montserrat,Arial,sans-serif;letter-spacing:-.04em;color:var(--ink)}
+.echo-law{margin-top:10px;font-weight:700}
+.echo-law .sec{margin-left:6px}
+.echo>p:not(.echo-law){margin-top:6px;font-size:15px;line-height:1.6;color:var(--ink-soft)}
+.echo-block>.text-link{margin-top:10px}
+/* Where sedition began. */
+.origin-line,.world-line{display:flex;gap:14px;align-items:flex-start;font-size:18px;line-height:1.55;font-weight:700;max-width:62ch}
+.origin-line svg,.world-line svg{width:26px;height:26px;margin-top:2px;color:var(--teal)}
+.bench-two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.world-line{margin-top:30px;padding-top:24px;border-top:1px solid var(--line);font-weight:400;color:var(--ink-soft)}
+@media(max-width:1100px){
+  .era-rail{grid-template-columns:1fr;gap:34px;max-width:720px}
+  .era{padding:0 0 0 26px}
+  .era::before{left:0;right:auto;top:0;bottom:0;width:4px;height:auto;transform-origin:top center}
+  .js .era::before{animation-name:thread-drop}
+  .era-name{position:static}
+  .era-items{grid-auto-flow:row;gap:22px;margin-top:16px}
+  .era-item::before{left:-30px;top:8px}
+  .era-now::before{left:-30px}
+  .then-now{grid-template-columns:1fr}
+  .tn-hinge span{flex-direction:row;max-width:none}
+  .tn-hinge svg{transform:rotate(90deg)}
+  .still-protects .pf-list{grid-template-columns:1fr}
+  .lineage{grid-template-columns:1fr;gap:14px;max-width:560px}
+  .lineage::before{left:37px;right:auto;top:22px;bottom:22px;width:2px;height:auto;background:repeating-linear-gradient(var(--line) 0 8px,transparent 8px 14px)}
+  .lin-step{flex-direction:row;text-align:left;gap:16px}
+  .echoes{grid-template-columns:1fr}
+}
+@media(max-width:767px){
+  .era-band{padding-block:44px 52px}
+  .carries{grid-template-columns:1fr;grid-template-areas:"a" "b" "c" "p"}
+  .carry-dissent{padding:24px 20px}
+  .tn{padding:22px 18px 20px}
+  .bench-two{grid-template-columns:1fr}
+  .lineage-fig figcaption>p:last-child{padding-left:0}
+  .origin-line,.world-line{font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){.js .era::before,.js .era-item{animation:none}}
