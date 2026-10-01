@@ -305,6 +305,9 @@ sup.sec{margin-left:3px;vertical-align:.5em;line-height:0}
 
 /* ---------- homepage: connections ---------- */
 .connections{padding-block:96px 100px}
+/* Revision 9: the four proposals at a glance close the homepage, just above the footer */
+.recommendations.props-glance{padding-block:0 104px}
+.recommendations .glance-grid{margin-bottom:26px}
 .connections .section-heading p{max-width:61ch}
 .connection-stories{display:grid;grid-template-columns:1.1fr 1fr;gap:22px}
 .connection-story{text-decoration:none;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow 220ms ease,transform 220ms var(--ease)}
@@ -558,6 +561,7 @@ sup.sec{margin-left:3px;vertical-align:.5em;line-height:0}
   .gn-body{padding-left:22px}
   /* The law map becomes one card per law: name first, then its three ratings. */
   .connections{padding-block:64px}
+  .recommendations.props-glance{padding-block:0 72px}
   .connection-stories{grid-template-columns:1fr}
   .story-copy{padding:24px}
   .story-copy h3{font-size:23px}

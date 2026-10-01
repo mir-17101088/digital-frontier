@@ -5,7 +5,7 @@
 
 /* ---------- law header ---------- */
 .law-intro{padding-block:34px 44px}
-.law-heading{display:grid;grid-template-columns:1fr 250px;gap:56px;align-items:end}
+.law-heading{display:grid;grid-template-columns:1fr;gap:28px;align-items:end}
 .law-heading>*{min-width:0}
 .law-heading h1{font-size:clamp(40px,5vw,66px);max-width:880px;letter-spacing:-.05em;overflow-wrap:anywhere}
 .law-year{display:flex;gap:12px;align-items:center;font-size:16px;margin-bottom:16px;color:var(--muted)}
@@ -241,7 +241,7 @@ span.jurisdiction .flags,.juris-name .flags{margin-right:8px}
   .overlap-link:hover,.connection-link:hover{border-color:#426580}
 }
 @media(max-width:1100px){
-  .law-heading{grid-template-columns:1fr 210px;gap:28px}
+
   .law-layout{grid-template-columns:150px minmax(0,1fr);gap:24px}
   .layer-fold>summary{padding:26px 26px}
   .layer-body{padding:0 26px 32px}
@@ -369,10 +369,10 @@ span.jurisdiction .flags,.juris-name .flags{margin-right:8px}
 .glance-icon,.proposal-icon,.pg-icon{display:grid;place-items:center;width:46px;height:46px;border-radius:12px;background:var(--pc);color:#fff}
 .glance-icon svg,.proposal-icon svg,.pg-icon svg{width:23px;height:23px}
 .glance-kind,.proposal-kind{display:block;width:fit-content;padding:3px 10px;border-radius:999px;background:#fff;border:1px solid var(--pc-line);font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--pc)}
-.glance-tile[href="#osa"],.proposal#osa,.partb-group#comparable-osa{--pc:#1d6446;--pc-wash:#e3f1ea;--pc-line:#b9d8c5}
-.glance-tile[href="#ripa"],.proposal#ripa,.partb-group#comparable-ripa{--pc:#28577a;--pc-wash:#e5eef7;--pc-line:#b8cfe3}
-.glance-tile[href="#dca"],.proposal#dca,.partb-group#comparable-dca{--pc:#80501a;--pc-wash:#f8eddf;--pc-line:#e3cdb1}
-.glance-tile[href="#ais"],.proposal#ais,.partb-group#comparable-ais{--pc:#5b4a86;--pc-wash:#eeebf6;--pc-line:#cdc6e3}
+.glance-tile[href$="#osa"],.proposal#osa,.partb-group#comparable-osa{--pc:#1d6446;--pc-wash:#e3f1ea;--pc-line:#b9d8c5}
+.glance-tile[href$="#ripa"],.proposal#ripa,.partb-group#comparable-ripa{--pc:#28577a;--pc-wash:#e5eef7;--pc-line:#b8cfe3}
+.glance-tile[href$="#dca"],.proposal#dca,.partb-group#comparable-dca{--pc:#80501a;--pc-wash:#f8eddf;--pc-line:#e3cdb1}
+.glance-tile[href$="#ais"],.proposal#ais,.partb-group#comparable-ais{--pc:#5b4a86;--pc-wash:#eeebf6;--pc-line:#cdc6e3}
 .gap-map{display:grid;gap:10px}
 .gap-map li{display:grid;grid-template-columns:minmax(0,1.2fr) 44px minmax(0,1fr);align-items:stretch;gap:10px}
 .gap-today,.gap-next{padding:16px 18px;border-radius:12px}
