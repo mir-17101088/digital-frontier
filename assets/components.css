@@ -208,6 +208,13 @@ span.jurisdiction .flags,.juris-name .flags{margin-right:8px}
 .cell-item .source-link{display:inline;min-height:0}
 .cell-item .source-link::after{display:inline-block;margin-left:5px;vertical-align:-2px}
 .row-here{background:var(--short-wash)}
+/* Revision 12: a fourth column (surveillance), a quiet cell where no law is compared, and a note under the table. */
+.split-4{min-width:720px}
+.split-4 td,.split-4 thead th:not(:first-child){width:26%}
+.split-4 .juris-name{white-space:nowrap}
+.cell-none{color:var(--muted);font-style:italic}
+.split-note{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-size:15px;line-height:1.6;color:#33524a;max-width:68ch}
+.split-note .flags{margin-top:4px}
 .guardrails{margin-top:20px}
 .guardrails ol{counter-reset:g;display:grid;gap:0}
 .guardrails li{counter-increment:g;display:grid;grid-template-columns:34px 1fr;column-gap:12px;padding-bottom:16px;position:relative}
