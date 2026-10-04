@@ -102,6 +102,31 @@
 .analysis-card{background:#fff;border:1px solid #c6d6e3;border-radius:10px;padding:20px 22px 22px;scroll-margin-top:12px;min-width:0}
 .card-wide{grid-column:1/-1}
 .card-wide>p{max-width:70ch}
+/* Revision 14: every figure in the analysis grid docks at the foot of its card, so spare height in a row opens between
+   the text and the figure. On the two-column grid a card with a large figure takes whichever shape closes its row
+   (card_shapes() in build.py): a full-width band, a tall tile beside two stacked cards (its figure upright) or a single
+   tile (its figure compact). No cell is left empty and no card is widened to fill one. */
+.analysis-cards>.analysis-card{display:flex;flex-direction:column}
+.analysis-cards>.analysis-card>.flow,.analysis-cards>.analysis-card>.composition,.analysis-cards>.analysis-card>.term-cloud,.analysis-cards>.analysis-card>.board,.analysis-cards>.analysis-card>.doubled{margin:auto -22px -22px;padding:16px 22px 18px;background:#f3f7fa;border-top:1px solid #dde7ef;border-radius:0 0 9px 9px}
+.analysis-cards .flow-node,.analysis-cards .term-cloud>span{background:#fff}
+.analysis-cards>.has-fig>p:last-of-type{margin-bottom:16px}
+.doubled{text-align:center}
+.dbl-root{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#315a78}
+.dbl-arms{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px;padding-top:16px}
+.dbl-arms::before{content:"";position:absolute;top:0;left:25%;right:25%;height:12px;border:1.5px solid #9fb8cc;border-bottom:0;border-radius:8px 8px 0 0}
+.dbl-arms::after{content:"";position:absolute;top:-6px;left:50%;height:6px;border-left:1.5px solid #9fb8cc}
+.dbl-arms>span{padding:11px 12px;background:#fff;border:1px solid #c2d2de;border-radius:8px;font-size:14px;font-weight:700;line-height:1.35;color:#1d3b50}
+.doubled figcaption{margin-top:10px;font-size:13px;color:var(--muted)}
+@media(min-width:1101px){
+  .card-tall{grid-row:span 2}
+  .card-tall .flow-items{flex-direction:column;align-items:stretch;gap:6px}
+  .card-tall .flow-items>svg{transform:rotate(90deg);align-self:center}
+  .card-single .flow-items{gap:8px}
+  .card-tall .flow-items>svg,.card-single .flow-items>svg{color:#6f8ba0;flex:none}
+  .card-tall .flow-node,.card-single .flow-node{padding:12px 14px}
+  .card-single .flow-node strong{font-size:15px}
+  .card-single .flow figcaption{margin-top:8px}
+}
 .analysis-card p{font-size:16px;line-height:1.7;color:#27455a;margin-top:8px}
 .analysis-card .card-title h3{font-size:18px;color:#1d3b50}
 .frame{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#315a78;margin-bottom:10px}
