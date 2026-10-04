@@ -1,0 +1,34 @@
+# Inside Bangladesh’s Cyberspace
+
+> What Bangladesh’s digital laws say, what they protect and where they fall short, explained in plain language. Tech Global Institute’s visual edition of its white paper “A New Digital Frontier: A Roadmap for Rights-Respecting Digital Governance Laws in Bangladesh” (2nd edition, 2026).
+
+Each law guide keeps three layers apart: what the law says, our analysis, and our recommendation. Recommendations are proposals, not enacted law.
+Analysis: Shahzeb Mahmood. Development: Mir Rownak. Published by Tech Global Institute.
+
+## Start here
+
+- [Inside Bangladesh’s Cyberspace: Their Rules, Your Rights](https://investigations.techglobalinstitute.com/inside-bangladesh-cyberspace/): What Bangladesh’s digital laws say, what they protect and where they fall short, explained in plain language.
+
+## The six laws
+
+- [Personal Data Protection Act 2026](https://investigations.techglobalinstitute.com/inside-bangladesh-cyberspace/personal-data-protection.html): What the law says about personal data, consent and accountability, what it protects and where it falls short, explained in plain language.
+- [National Data Management Act 2026](https://investigations.techglobalinstitute.com/inside-bangladesh-cyberspace/national-data-management.html): What the law says about public databases and data governance, what it protects and where it falls short, explained in plain language.
+- [Cyber Protection Act 2026](https://investigations.techglobalinstitute.com/inside-bangladesh-cyberspace/cyber-protection.html): What the law says about speech, online content and cybercrime, what it protects and where it falls short, explained in plain language.
+- [Bangladesh Telecommunication Act 2001](https://investigations.techglobalinstitute.com/inside-bangladesh-cyberspace/telecommunication.html): What the law says about telecom, internet services and interception, what it protects and where it falls short, explained in plain language.
+- [Penal Code 1860](https://investigations.techglobalinstitute.com/inside-bangladesh-cyberspace/penal-code.html): What the law says about speech offenses and criminal defamation, what it protects and where it falls short, explained in plain language.
+- [Pornography Control Act 2012](https://investigations.techglobalinstitute.com/inside-bangladesh-cyberspace/pornography-control.html): What the law says about sexual content, possession and distribution, what it protects and where it falls short, explained in plain language.
+
+## Across the laws
+
+- [How the Laws Overlap](https://investigations.techglobalinstitute.com/inside-bangladesh-cyberspace/one-act-many-laws.html): Eleven everyday subjects and the main laws that reach them: an interactive map of where Bangladesh’s digital laws overlap, and the different penalties the same conduct can meet.
+- [The Security-First Thread](https://investigations.techglobalinstitute.com/inside-bangladesh-cyberspace/security-first.html): How exemptions in the Personal Data Protection Act, joined-up records under the Data Management Act and interception under the Telecommunication Act connect.
+- [The Colonial Governance Logic](https://investigations.techglobalinstitute.com/inside-bangladesh-cyberspace/colonial-logic.html): How colonial-era speech offenses in the Penal Code, and the punitive logic behind them, carry into Bangladesh’s digital laws today.
+
+## Recommendations and method
+
+- [4 Laws Bangladesh Needs](https://investigations.techglobalinstitute.com/inside-bangladesh-cyberspace/laws-bangladesh-needs.html): Our four proposals, explained: an Online Safety Act, an investigatory-powers law, a Digital Commerce Act and an AI strategy, with comparative laws from other jurisdictions.
+- [How We Assessed the Six Laws](https://investigations.techglobalinstitute.com/inside-bangladesh-cyberspace/how-we-assessed.html): How we rated six of Bangladesh’s digital laws for their impact on freedom of expression, civic participation and privacy, measured against the ICCPR and the Constitution of Bangladesh.
+
+## Source
+
+- [The detailed white paper (PDF)](https://techglobalinstitute.com/wp-content/uploads/2026/09/WHITE-PAPER-BANGLADESH.pdf): the full analysis behind every page.

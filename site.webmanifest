@@ -1,0 +1,22 @@
+{
+ "name": "Inside Bangladesh’s Cyberspace",
+ "short_name": "BD Cyberspace",
+ "description": "What Bangladesh’s digital laws say, what they protect and where they fall short, explained in plain language.",
+ "start_url": "./",
+ "scope": "./",
+ "display": "browser",
+ "background_color": "#ffffff",
+ "theme_color": "#174D4F",
+ "icons": [
+  {
+   "src": "assets/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "assets/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  }
+ ]
+}
