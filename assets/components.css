@@ -230,8 +230,8 @@ span.jurisdiction .flags,.juris-name .flags{margin-right:8px}
 .split-table thead{background:#edf3ef}
 .split-table td{padding-top:11px}
 .cell-item{display:block;padding:3px 0;line-height:1.5}
-.cell-item .source-link{display:inline;min-height:0}
-.cell-item .source-link::after{display:inline-block;margin-left:5px;vertical-align:-2px}
+.cell-item .source-link,.pf-list .source-link{display:inline;min-height:0}
+.cell-item .source-link::after,.pf-list .source-link::after{display:inline-block;margin-left:5px;vertical-align:-2px}
 .row-here{background:var(--short-wash)}
 /* Revision 12: a fourth column (surveillance), a quiet cell where no law is compared, and a note under the table. */
 .split-4{min-width:720px}
@@ -634,13 +634,15 @@ span.jurisdiction .flags,.juris-name .flags{margin-right:8px}
 .still-protects{grid-area:p;border-radius:14px;padding:18px 20px 16px}
 .still-protects .pf-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 22px}
 /* The pattern repeats: the cyber law's line of predecessors. */
-.lineage{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;counter-reset:lin}
-.lineage::before{content:"";position:absolute;left:8%;right:8%;top:22px;height:2px;background:repeating-linear-gradient(90deg,var(--line) 0 8px,transparent 8px 14px)}
+.lineage{position:relative;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:12px;counter-reset:lin}
+.lineage::before{content:"";position:absolute;left:6%;right:6%;top:22px;height:2px;background:repeating-linear-gradient(90deg,var(--line) 0 8px,transparent 8px 14px)}
 .lin-step{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
 .lin-year{position:relative;display:grid;place-items:center;min-width:76px;height:44px;padding-inline:12px;border-radius:999px;background:#e4efea;border:1px solid var(--line);font:800 16px Montserrat,Arial,sans-serif;color:var(--ink-soft)}
 .lin-name{font-size:14px;line-height:1.45;color:var(--ink-soft)}
 .lin-now .lin-year{background:var(--teal);border-color:var(--teal);color:#fff;box-shadow:0 0 0 6px #174d4f1f}
-.lin-now a{font-size:15px;font-weight:700;line-height:1.45}
+.lin-step>a{font-size:14px;font-weight:700;line-height:1.45;color:var(--ink)}
+.lin-now a{font-size:15px}
+.lin-more{margin-top:14px}
 .lineage-fig figcaption{margin-top:26px;padding:20px 22px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px}
 .lin-verdict{display:flex;gap:12px;font-size:18px;font-weight:700;line-height:1.5;color:var(--ink)}
 .lin-verdict svg{width:26px;height:26px;margin-top:2px;color:var(--teal)}

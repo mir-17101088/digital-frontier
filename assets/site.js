@@ -142,6 +142,8 @@ if (layers.length && 'IntersectionObserver' in window) {
 // Closing the sheet keeps the selection lit until the reader taps empty space or another node.
 // Revision 6: only the eight main laws appear. The table beneath is the map's data and, without
 // JavaScript, its text alternative; once the map is drawn it is hidden (there is no table toggle).
+// Revision 15: a round "patchwork" node under the laws joins every subject with a dashed line. Selecting it
+// lists other laws by name only, read from the list under the table (#patchwork, also its no-JS form).
 const network = document.querySelector('[data-network]');
 if (network) {
   const stage = network.querySelector('[data-net-stage]');
@@ -155,7 +157,7 @@ if (network) {
   const NS = 'http://www.w3.org/2000/svg';
   const sheetQuery = matchMedia('(max-width: 1099px)');
   const isSheet = () => sheetQuery.matches;
-  const subjects = new Map(), laws = new Map(), edges = [];
+  const subjects = new Map(), laws = new Map(), edges = [], links = [];
   stage.querySelectorAll('.net-subject').forEach(node => subjects.set(node.dataset.subject, {kind:'subject', key:node.dataset.subject, node, label:node.querySelector('.net-label').textContent, edges:[]}));
   stage.querySelectorAll('.net-law').forEach(node => laws.set(node.dataset.law, {kind:'law', key:node.dataset.law, node, label:node.querySelector('.net-label').textContent.replace(/­/g, ''), edges:[]}));
   network.querySelectorAll('.overlap-table tbody tr[data-subject]').forEach(row => {
@@ -169,6 +171,10 @@ if (network) {
       subject.edges.push(edge); law.edges.push(edge); edges.push(edge);
     });
   });
+  const pwNode = stage.querySelector('[data-patchwork-node]'), pwList = network.querySelector('[data-patchwork] ol');
+  const pw = pwNode && pwList ? {kind:'patchwork', node:pwNode, label:pwNode.querySelector('.net-label').textContent, edges:links} : null;
+  if (pw) { pw.name = pw.label; subjects.forEach(subject => links.push({subject, law:pw})); }
+  const items = () => [...subjects.values(), ...laws.values(), ...(pw ? [pw] : [])];
   let selected = null, sheet = 'closed';
   const draw = () => {
     svg.replaceChildren();
@@ -181,12 +187,21 @@ if (network) {
       path.setAttribute('class', 'net-edge');
       edge.path = path; svg.append(path);
     });
+    links.forEach(link => {
+      const a = link.subject.node.getBoundingClientRect(), b = pw.node.getBoundingClientRect();
+      const x1 = a.right - box.left, y1 = a.top + a.height / 2 - box.top, x2 = b.left - box.left, y2 = b.top + b.height / 2 - box.top, mid = (x1 + x2) / 2;
+      const path = document.createElementNS(NS, 'path');
+      path.setAttribute('d', `M${x1} ${y1}C${mid} ${y1} ${mid} ${y2} ${x2} ${y2}`);
+      path.setAttribute('class', 'net-link');
+      link.path = path; svg.prepend(path);
+    });
     paint(false);
   };
   const paint = animate => {
     const lit = new Set();
     if (selected) selected.edges.forEach(edge => { lit.add(edge.subject); lit.add(edge.law); });
-    [...subjects.values(), ...laws.values()].forEach(item => {
+    if (selected && selected.kind === 'subject' && pw) lit.add(pw);
+    items().forEach(item => {
       item.node.classList.toggle('is-dim', !!selected && !lit.has(item));
       item.node.classList.toggle('is-lit', !!selected && lit.has(item) && item !== selected);
       item.node.setAttribute('aria-pressed', String(item === selected));
@@ -202,6 +217,11 @@ if (network) {
         edge.path.animate([{strokeDasharray:length, strokeDashoffset:length}, {strokeDasharray:length, strokeDashoffset:0}], {duration:560, easing:EASE});
       }
     });
+    links.forEach(link => {
+      const on = !!selected && (link.subject === selected || selected === pw);
+      link.path.classList.toggle('is-lit', on);
+      link.path.classList.toggle('is-dim', !!selected && !on);
+    });
   };
   const term = years => {
     if (!years) return '';
@@ -215,7 +235,11 @@ if (network) {
       return;
     }
     const n = selected.edges.length;
-    if (selected.kind === 'subject') {
+    if (selected.kind === 'patchwork') {
+      const names = pwList.querySelectorAll('li');
+      body.innerHTML = `<p class="net-panel-count"><strong>${names.length}</strong> other laws</p><h3 tabindex="-1">${selected.label}</h3>`
+        + `<ol class="pw-names">${[...names].map(li => `<li>${li.innerHTML}</li>`).join('')}</ol>`;
+    } else if (selected.kind === 'subject') {
       const extra = selected.row.querySelector('.subject-explain'), lead = selected.row.querySelector('.subject-lead');
       body.innerHTML = `<p class="net-panel-count"><strong>${n}</strong> ${n === 1 ? 'main law reaches' : 'main laws reach'} this subject</p><h3 tabindex="-1">${selected.label}</h3>`
         + (lead ? lead.outerHTML : '') + (extra ? extra.outerHTML : '')
@@ -253,7 +277,7 @@ if (network) {
     select(item);
     // A chosen subject is shareable. (Only after a click: writing the address during load would make
     // the browser jump to that row.)
-    history.replaceState(null, '', selected && selected.kind === 'subject' ? '#subject-' + selected.key : location.pathname);
+    history.replaceState(null, '', !selected ? location.pathname : selected.kind === 'subject' ? '#subject-' + selected.key : selected === pw ? '#patchwork' : location.pathname);
     if (!isSheet()) return;
     setSheet(selected ? (sheet === 'full' ? 'full' : 'peek') : 'closed');
     if (selected) {
@@ -261,7 +285,7 @@ if (network) {
       if (root.classList.contains('keyboard-input')) body.querySelector('h3')?.focus({preventScroll:true});
     }
   };
-  [...subjects.values(), ...laws.values()].forEach(item => item.node.addEventListener('click', () => choose(item)));
+  items().forEach(item => item.node.addEventListener('click', () => choose(item)));
   // Tapping the map's empty space clears the selection.
   stage.addEventListener('click', event => { if (!event.target.closest('.net-node') && selected) { select(null); history.replaceState(null, '', location.pathname); setSheet('closed'); } });
   const closeSheet = () => { setSheet('closed'); if (root.classList.contains('keyboard-input')) selected?.node.focus(); };
@@ -301,17 +325,20 @@ if (network) {
   sheetQuery.addEventListener('change', () => { setSheet('closed'); draw(); });
   stage.hidden = false; panel.hidden = false; network.classList.add('net-ready');
   network.querySelector('[data-net-table]').hidden = true;
-  const fromHash = subjects.get((location.hash.match(/^#subject-([\w-]+)$/) || [])[1]);
+  const fromAddress = () => location.hash === '#patchwork' ? pw : subjects.get((location.hash.match(/^#subject-([\w-]+)$/) || [])[1]);
+  const fromHash = fromAddress();
   draw();
   // It opens on one subject so the idea is visible at once; on a phone the detail waits behind the tab.
   select(fromHash || subjects.get('speech'), false);
   setSheet('closed');
-  // A link to a subject lands on the map (its table row is hidden once the map is drawn).
-  if (fromHash) addEventListener('load', () => network.scrollIntoView({block:'start'}), {once:true});
+  // A link to a subject lands on the map (its table row is hidden once the map is drawn). A link to the
+  // patchwork (from the colonial page) also opens its list on a phone.
+  const land = target => { network.scrollIntoView({block:'start'}); if (target === pw && isSheet()) setSheet('peek'); };
+  if (fromHash) addEventListener('load', () => land(fromHash), {once:true});
   addEventListener('hashchange', () => {
-    const target = subjects.get((location.hash.match(/^#subject-([\w-]+)$/) || [])[1]);
+    const target = fromAddress();
     if (!target) return;
-    select(target); setSheet('closed'); network.scrollIntoView({block:'start'});
+    select(target); setSheet('closed'); land(target);
   });
   new ResizeObserver(() => draw()).observe(stage);
 }

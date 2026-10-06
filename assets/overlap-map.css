@@ -1,14 +1,18 @@
 /* The overlap network (one-act-many-laws.html), Revision 3.
    Subjects (square-cornered) on the left, the eight analysed laws (pills with an
    icon) on the right. Shape, weight and the panel's words carry every state, so
-   the map reads in greyscale. Without JavaScript the table below is the map. */
+   the map reads in greyscale. Without JavaScript the table below is the map.
+   Revision 15: subjects are amber and laws teal, two hues checked for colour-blind
+   separation (dataviz validator: protan dE 11.4, normal 18.1, both >= 3:1 on white);
+   the round "other laws" node is neutral and dashed, like its lines. */
 .net{margin:0 0 24px}
 .net-key{flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 24px;margin-bottom:14px;font-size:14px;color:var(--muted)}
 .net-key p:first-child{display:flex;gap:18px}
 .net-key span{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:var(--ink)}
-.key-subject::before,.key-law::before{content:"";width:13px;height:13px}
-.key-subject::before{border-radius:3px;background:#23445c}
-.key-law::before{border-radius:50%;background:var(--teal)}
+.key-subject::before,.key-law::before,.key-pw::before{content:"";width:13px;height:13px}
+.key-subject::before{border-radius:3px;background:#a8701d}
+.key-law::before{border-radius:50%;background:#008a7c}
+.key-pw::before{border-radius:50%;border:1.5px dashed #5f7379;width:12px;height:12px}
 /* Revision 4: related laws the paper does not analyse. Dashed outline and dashed lines, in words too. */
 .net-layout{display:grid;gap:22px}
 .net-stage{position:relative;display:grid;grid-template-columns:minmax(0,1fr) clamp(40px,11vw,150px) minmax(0,1fr);padding:18px;background:#fbfcfd;border:1px solid #ccdae5;border-radius:16px;
@@ -20,18 +24,34 @@
 .net-node{display:flex;align-items:center;gap:10px;width:100%;min-height:48px;padding:8px 8px 8px 12px;border:1px solid;text-align:left;font-size:14px;font-weight:700;line-height:1.3;
   transition:opacity 200ms ease,background-color 200ms ease,color 200ms ease,border-color 200ms ease,box-shadow 200ms ease,transform 160ms var(--ease)}
 .net-node:active{transform:scale(.98)}
-.net-subject{border-radius:8px;background:#f1f6fa;border-color:#c1d2e0;color:#1d3d55}
-.net-law{border-radius:999px;background:#edf6f2;border-color:#b6d3c6;color:var(--ink);padding-left:8px}
+.net-subject{border-radius:8px;background:#fbf1df;border-color:#a8701d;color:#4a3208}
+.net-law{border-radius:999px;background:#ddf1ec;border-color:#008a7c;color:var(--ink);padding-left:8px}
 .net-icon{display:grid;place-items:center;width:30px;height:30px;flex-shrink:0;border-radius:50%;background:#fff;color:var(--teal)}
+/* Revision 15: the patchwork of other laws, one round node under the main laws. */
+.net-patchwork{align-self:center;flex-direction:column;justify-content:center;width:min(100%,164px);min-height:0;aspect-ratio:1;margin-top:10px;padding:16px;
+  border:1.5px dashed #5f7379;border-radius:50%;background:#fff;color:#2b3f44;text-align:center;font-size:13px;line-height:1.25;box-shadow:0 0 0 5px #fbfcfd}
+.net-patchwork .net-label{text-wrap:balance}
+.net-patchwork[aria-pressed=true]{background:#2b3f44;border:1.5px solid #2b3f44;color:#fff;box-shadow:0 8px 20px #2b3f4440}
+.net-patchwork.is-lit{border:2px solid #2b3f44;padding:15.5px}
+.net-link{fill:none;stroke:#8d9ca1;stroke-width:1.2;stroke-dasharray:3 5;opacity:.45;transition:opacity 220ms ease,stroke 220ms ease}
+.net-link.is-dim{opacity:.08}
+.net-link.is-lit{stroke:#2b3f44;stroke-width:1.8;opacity:.9}
+.pw-names{display:grid;gap:0;margin-top:14px;counter-reset:pw}
+.pw-names li{display:flex;gap:12px;padding:9px 2px;border-top:1px solid var(--line-soft);font-size:15px;line-height:1.45;counter-increment:pw}
+.pw-names li::before{content:counter(pw);min-width:22px;font-size:13px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums;text-align:right;padding-top:1px}
+.patchwork-list{margin-top:18px;padding:20px 22px;background:#fff;border:1px solid var(--line);border-radius:12px}
+.patchwork-list h2{font-size:22px;line-height:1.25;letter-spacing:-.02em}
+.patchwork-list ol{margin-top:10px;padding-left:22px;list-style:decimal;columns:2 280px;column-gap:32px}
+.patchwork-list li{padding:3px 0;font-size:15px;break-inside:avoid}
 .net-icon svg{width:17px;height:17px}
 .net-label{min-width:0;overflow-wrap:break-word;-webkit-hyphens:manual;hyphens:manual}
 .net-count{display:grid;place-items:center;min-width:26px;height:26px;margin-left:auto;flex-shrink:0;padding:0 6px;border-radius:13px;border:1px solid currentColor;background:#fff;font-size:12px;font-variant-numeric:tabular-nums}
-.net-subject[aria-pressed=true]{background:#23445c;border-color:#23445c;color:#fff;box-shadow:0 8px 20px #23445c40}
+.net-subject[aria-pressed=true]{background:#7a5212;border-color:#7a5212;color:#fff;box-shadow:0 8px 20px #7a521240}
 .net-law[aria-pressed=true]{background:var(--teal);border-color:var(--teal);color:#fff;box-shadow:0 8px 20px #174d4f40}
 .net-node[aria-pressed=true] .net-count{background:transparent}
 .net-node.is-lit{border-width:2px;padding-block:7px;box-shadow:0 6px 16px #13302f1f}
-.net-subject.is-lit{background:#fff;border-color:#23445c}
-.net-law.is-lit{background:#fff;border-color:var(--teal)}
+.net-subject.is-lit{background:#fff;border-color:#a8701d}
+.net-law.is-lit{background:#fff;border-color:#008a7c}
 .net-node.is-dim{opacity:.38}
 .net-edge{fill:none;stroke:#8fa9bb;stroke-width:1.5;opacity:.55;transition:opacity 220ms ease,stroke 220ms ease,stroke-width 220ms ease}
 .net-edge.is-dim{opacity:.1}
@@ -104,10 +124,12 @@
 .overlap-table tr:target{background:#fff8e6}
 .overlap-table tr:target th{box-shadow:inset 4px 0 var(--teal)}
 @media(hover:hover) and (pointer:fine){
-  .net-subject:hover{border-color:#23445c;background:#fff}
+  .net-subject:hover{border-color:#7a5212;background:#fff}
   .net-law:hover{border-color:var(--teal);background:#fff}
-  .net-node[aria-pressed=true]:hover{background:#2c5372}
+  .net-patchwork:hover{border-style:solid}
+  .net-subject[aria-pressed=true]:hover{background:#8a5e17}
   .net-law[aria-pressed=true]:hover{background:#215f61}
+  .net-patchwork[aria-pressed=true]:hover{background:#38525a}
   .net-node.is-dim:hover{opacity:.8}
 }
 @media(min-width:1100px){
@@ -121,6 +143,8 @@
   .net-icon{width:24px;height:24px}
   .net-icon svg{width:14px;height:14px}
   .net-count{min-width:22px;height:22px;font-size:11px;padding:0 4px}
+  .net-patchwork{width:min(100%,136px);padding:10px;font-size:12px;line-height:1.2}
+  .net-patchwork.is-lit{padding:9.5px}
   .net-panel h3{font-size:20px}
   .overlap-table{min-width:0}
   .overlap-table thead{display:none}
@@ -134,5 +158,8 @@
   .net-icon{display:none}
   .net-law{padding-left:10px}
 }
-@media(prefers-reduced-motion:reduce){.net-edge,.net-node{transition:none}.term-bar{animation:none}}
+@media(max-width:420px){.net-patchwork{padding:8px;font-size:11.5px}.net-patchwork.is-lit{padding:7.5px}}
+/* The narrowest phones (320px): a tighter gutter and smaller type so no label breaks inside a word. */
+@media(max-width:360px){.net-stage{padding:8px;grid-template-columns:minmax(0,1fr) 20px minmax(0,1fr)}.net-node{font-size:12px;gap:4px;padding:6px 4px 6px 7px}.net-law{padding-left:8px}.net-count{min-width:20px;height:20px;padding:0 3px}}
+@media(prefers-reduced-motion:reduce){.net-edge,.net-link,.net-node{transition:none}.term-bar{animation:none}}
 @media print{.net-stage,.net-key,.net-panel{display:none!important}}
