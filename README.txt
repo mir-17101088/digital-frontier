@@ -8,6 +8,3 @@ Local preview: http://localhost:4173
 robots.txt, sitemap.xml, llms.txt and site.webmanifest sit beside the pages. Their URLs, the canonical
 links and the share card use SITE_URL in ../tools/build.py (see ../BUILD-NOTES.md, Revision 14).
 All reading content and navigation work without JavaScript.
-
-Build instructions, checks and editorial handoff notes: ../BUILD-NOTES.md
-Original project charter: ../CLAUDE.md
