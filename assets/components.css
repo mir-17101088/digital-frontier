@@ -338,34 +338,37 @@ span.jurisdiction .flags,.juris-name .flags{margin-right:8px}
 .thread-band::before{content:"";position:absolute;inset:0;z-index:-1;background-image:radial-gradient(#ffffff17 1px,transparent 1.3px);background-size:22px 22px;-webkit-mask-image:linear-gradient(#000,transparent 80%);mask-image:linear-gradient(#000,transparent 80%)}
 .thread-band h2{color:#f4faf7;font-size:clamp(28px,3vw,40px)}
 .thread-band :focus-visible{outline-color:var(--mint)}
-.thread-line{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;margin-top:40px}
-.thread-line::before{content:"";position:absolute;left:34px;right:calc((100% - 60px) / 4 - 34px);top:33px;height:3px;border-radius:2px;background:linear-gradient(90deg,#8fdac3,#aacff1 45%,#f2ca92 78%,#f4faf7);transform-origin:left center}
-.station{position:relative;--st:#8fdac3}
-.station:nth-child(2){--st:#aacff1}
-.station:nth-child(3){--st:#f2ca92}
-.station-result{--st:#f4faf7}
-.station-icon{position:relative;display:grid;place-items:center;width:68px;height:68px;border-radius:50%;background:#0f3537;border:3px solid var(--st);color:var(--st);box-shadow:0 0 0 8px #0f35378c}
+.thread-line{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 88px minmax(0,1fr);grid-template-rows:auto 56px auto 56px auto;margin-top:40px}
+/* Mir (6 Oct 2026): the thread as layers. The exemptions (1) sit on top and run into both the joined records (2) and
+   interception (3); a spine carries them straight on, and all three run into what they add up to. Lines, numbers and
+   position carry the links; colour only supports them. */
+.station{position:relative;--st:#8fdac3;display:grid;grid-template-columns:68px minmax(0,1fr);grid-template-areas:"i l" "i h" "i f";align-content:start;column-gap:22px;padding:24px 26px 24px 24px;border:1px solid #ffffff21;border-radius:18px;background:#143f42}
+.st-1{grid-area:1/1/2/4;border-color:#8fdac380}
+.st-2{grid-area:3/1/4/2;--st:#aacff1}
+.st-3{grid-area:3/3/4/4;--st:#f2ca92}
+.station-result{grid-area:5/1/6/4;--st:#f4faf7;background:#f4faf7;border-color:#f4faf7;color:#0e3234}
+.st-1,.station-result{grid-template-columns:68px minmax(0,.8fr) minmax(0,1.2fr);grid-template-areas:"i l f" "i h f";align-items:center}
+.station-icon{grid-area:i;align-self:start;position:relative;display:grid;place-items:center;width:68px;height:68px;border-radius:50%;background:#0f3537;border:3px solid var(--st);color:var(--st)}
 .station-icon svg{width:28px;height:28px;stroke-width:1.6}
-.station-num{position:absolute;left:50px;top:-6px;z-index:1;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--st);color:#0e3234;font:800 13px Montserrat,Arial,sans-serif}
-.station-law{margin-top:18px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#a9cfc4}
+.station-num{position:absolute;right:-9px;top:-7px;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--st);color:#0e3234;font:800 13px Montserrat,Arial,sans-serif;box-shadow:0 0 0 3px #143f42}
+.station-law{grid-area:l;margin-top:4px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#a9cfc4}
 .station-law a{color:inherit;text-underline-offset:4px}
-.station h3{margin-top:6px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:21px;line-height:1.2;letter-spacing:-.03em;color:#f4faf7}
-.station>p:last-child{margin-top:8px;font-size:15px;line-height:1.6;color:#cfe3dc}
-.station-result .station-icon{background:#f4faf7;color:#0e3234}
-.station-result h3{color:var(--mint)}
-.thread-links{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:40px;padding-top:24px;border-top:1px solid #ffffff26}
-.thread-links li{display:flex;align-items:center;gap:14px;font-size:15px;color:#d8ebe4}
-.link-pair{display:inline-flex;align-items:center;gap:6px;flex-shrink:0;font:800 13px Montserrat,Arial,sans-serif;color:#0e3234}
-.link-pair{padding:4px 10px;border-radius:999px;background:#f4faf7}
-.link-pair i{display:block;width:14px;height:2px;background:#0e3234}
-.js .thread-line::before{animation:thread-draw 1100ms var(--ease) 150ms both}
-.js .station{animation:station-rise 620ms var(--ease) both}
-.js .station:nth-child(2){animation-delay:180ms}
-.js .station:nth-child(3){animation-delay:360ms}
-.js .station:nth-child(4){animation-delay:540ms}
-@keyframes thread-draw{from{transform:scaleX(0)}}
-@keyframes station-rise{from{opacity:0;transform:translateY(14px)}}
-@keyframes thread-drop{from{transform:scaleY(0)}}
+.station h3{grid-area:h;margin-top:6px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:21px;line-height:1.2;letter-spacing:-.03em;color:#f4faf7}
+.station-fact{grid-area:f;margin-top:8px;font-size:15px;line-height:1.6;color:#cfe3dc}
+.st-1 .station-fact,.station-result .station-fact{margin-top:0;font-size:16px}
+.st-1 .station-icon,.station-result .station-icon{align-self:center}
+.station-result .station-icon{background:#0e3234;border-color:#0e3234;color:#f4faf7}
+.station-result .station-num{background:#0e3234;color:#f4faf7;box-shadow:0 0 0 3px #f4faf7}
+.station-result .station-law{color:#4c6361}
+.station-result h3{color:#0e3234}
+.station-result .station-fact{color:#2d4b49}
+/* The connections: a spine from the exemptions to the result, and a line into and out of each middle layer. */
+.thread-line::before{content:"";grid-area:2/2/5/3;justify-self:center;width:3px;border-radius:2px;background:linear-gradient(#8fdac3,#8fdac3 70%,#f4faf7);transform-origin:top}
+.st-2::before,.st-3::before,.st-2::after,.st-3::after{content:"";position:absolute;left:50%;width:3px;height:56px;margin-left:-1.5px;border-radius:2px;transform-origin:top}
+.st-2::before,.st-3::before{bottom:calc(100% + 1px);background:linear-gradient(#8fdac3,var(--st))}
+.st-2::after,.st-3::after{top:calc(100% + 1px);background:linear-gradient(var(--st),#f4faf7)}
+/* Drawn once, when first seen: each layer rises and the lines into the next layer grow (site.js adds .is-drawn). */
+.st-1{--d:0ms}.thread-line{--dl:240ms}.st-2{--du:260ms;--d:400ms;--dd:700ms}.st-3{--du:300ms;--d:460ms;--dd:740ms}.station-result{--d:880ms}
 .means-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .mean-card{padding:24px 22px;background:#fff;border:1px solid var(--line);border-top:4px solid #c9905b;border-radius:14px}
 .mean-card svg{width:40px;height:40px;padding:9px;border-radius:50%;background:var(--short-wash);color:var(--short);stroke-width:1.6}
@@ -509,21 +512,18 @@ span.jurisdiction .flags,.juris-name .flags{margin-right:8px}
   .proposal-head:hover::after{background:linear-gradient(#fff,#fff) center/14px 2px no-repeat,linear-gradient(#fff,#fff) center/2px 14px no-repeat,var(--pc)}
 }
 @media(max-width:1100px){
-  .thread-line{grid-template-columns:1fr;gap:28px;max-width:720px}
-  .thread-line::before{display:none}
-  .station{display:grid;grid-template-columns:68px minmax(0,1fr);column-gap:20px}
-  .station>*:not(.station-icon):not(.station-num){grid-column:2}
-  .station-icon{grid-row:1/span 3;z-index:1}
-  .station-num{z-index:2}
-  .station-law{margin-top:4px}
-  .station:not(:last-child)::after{content:"";position:absolute;left:32.5px;top:68px;bottom:-28px;width:3px;border-radius:2px;background:linear-gradient(var(--st),var(--next));transform-origin:top center}
-  .station:nth-child(1){--next:#aacff1}
-  .station:nth-child(2){--next:#f2ca92}
-  .station:nth-child(3){--next:#f4faf7}
-  .js .station:not(:last-child)::after{animation:thread-drop 520ms var(--ease) both}
-  .js .station:nth-child(1)::after{animation-delay:420ms}
-  .js .station:nth-child(2)::after{animation-delay:600ms}
-  .js .station:nth-child(3)::after{animation-delay:780ms}
+  /* One column: the exemptions' line runs down the left, branching into the two indented middle layers. */
+  .thread-line{grid-template-columns:minmax(0,1fr);grid-template-rows:none;gap:18px;max-width:720px}
+  .station,.st-1,.station-result{grid-area:auto;grid-template-columns:52px minmax(0,1fr);grid-template-areas:"i l" "i h" "i f";align-items:start;column-gap:16px;padding:18px 18px 20px}
+  .st-2,.st-3{margin-left:64px}
+  .station-icon,.st-1 .station-icon,.station-result .station-icon{width:52px;height:52px;align-self:start}
+  .station-icon svg{width:23px;height:23px}
+  .station-num{width:22px;height:22px;font-size:12px;right:-7px;top:-6px}
+  .st-1 .station-fact,.station-result .station-fact{margin-top:8px;font-size:15px}
+  .thread-line::before{grid-area:auto;position:absolute;left:42.5px;top:44px;bottom:44px;background:#8fdac3}
+  .st-2::before,.st-3::before{left:auto;right:calc(100% + 1px);bottom:auto;top:43px;width:20px;height:3px;margin:0;background:#8fdac3;transform-origin:left}
+  .st-2::after,.st-3::after{display:none}
+  .thread-line{--dl:200ms}.st-2{--du:420ms;--d:480ms}.st-3{--du:560ms;--d:620ms}.station-result{--d:780ms}
   .means-grid{grid-template-columns:1fr}
   .walk-cols{grid-template-columns:1fr}
   .checks{grid-template-columns:1fr 1fr}
@@ -534,8 +534,10 @@ span.jurisdiction .flags,.juris-name .flags{margin-right:8px}
 }
 @media(max-width:767px){
   .thread-band{padding-block:44px 52px}
-  .station{column-gap:16px}
-  .thread-links{grid-template-columns:1fr}
+  .station{column-gap:14px;padding:16px 16px 18px}
+  .st-2,.st-3{margin-left:52px}
+  .thread-line::before{left:40.5px;top:42px;bottom:42px}
+  .st-2::before,.st-3::before{top:41px;width:10px}
   .walk::before{left:17px}
   .walk-step{grid-template-columns:36px minmax(0,1fr);gap:12px}
   .walk-num{width:36px;height:36px;font-size:15px}
@@ -564,7 +566,16 @@ span.jurisdiction .flags,.juris-name .flags{margin-right:8px}
   .pg-icon{width:40px;height:40px}
   .pg-body{padding:14px 14px 18px}
 }
-@media(prefers-reduced-motion:reduce){.js .thread-line::before,.js .station,.js .station::after{animation:none}}
+/* Narrow phones: each layer's icon sits above its words, so long headings keep their width. */
+@media(max-width:420px){
+  .station,.st-1,.station-result{grid-template-columns:minmax(0,1fr);grid-template-areas:"i" "l" "h" "f"}
+  .station-icon,.st-1 .station-icon,.station-result .station-icon{width:44px;height:44px;margin-bottom:12px}
+  .station-icon svg{width:20px;height:20px}
+  .station h3{font-size:19px}
+  .st-2,.st-3{margin-left:48px}
+  .thread-line::before{left:36.5px;top:38px;bottom:38px}
+  .st-2::before,.st-3::before{top:36.5px;width:10px}
+}
 
 /* ---------- the colonial governance logic (colonial-logic.html), Revision 10 ----------
    A dark band reads like a ledger: one rail through three eras, each era named in words
@@ -577,30 +588,39 @@ span.jurisdiction .flags,.juris-name .flags{margin-right:8px}
 .era-band h2{color:#f4faf7;font-size:clamp(28px,3vw,40px)}
 .era-lede{margin-top:10px;font-size:16px;color:#c9ded7}
 .era-band :focus-visible{outline-color:var(--mint)}
-.era-rail{display:grid;grid-template-columns:2fr 3fr 2fr;gap:18px;margin-top:44px}
-.era{--era:#f2ca92;position:relative;padding-top:22px}
+.era-rail{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr) minmax(0,1fr);grid-template-rows:auto 56px auto 56px auto;column-gap:16px;margin-top:40px}
+/* Mir (6 Oct 2026): the same layers as the security-first thread. The 1860 code on top runs into each era's amendments,
+   and every era runs into what is still in force today. Era names, years and position carry it; colour supports. */
+.era-root,.era-result{position:relative;display:grid;grid-template-columns:auto minmax(0,.8fr) minmax(0,1.2fr);grid-template-areas:"w t p";align-items:center;column-gap:30px;padding:24px 28px;border-radius:18px}
+.era-root{--era:#f2ca92;grid-area:1/1/2/4;background:#1d3d3a;border:1px solid #f2ca9273}
+.era-result{--era:#0e3234;grid-area:5/1/6/4;background:#f4faf7;color:#0e3234}
+.era-root .era-when,.era-result .era-when{grid-area:w;font-size:46px}
+.era-root h3,.era-result h3{grid-area:t;margin:0;font-size:20px}
+.era-root p,.era-result p{grid-area:p;margin:0;font-size:16px}
+.era-root h3{color:#f4faf7}
+.era-result h3{color:#0e3234}
+.era-result p{color:#2d4b49}
+.era{--era:#f2ca92;position:relative;grid-row:3;padding:18px 20px 22px;border:1px solid #ffffff21;border-radius:18px;background:#163c3d}
 .era-pakistan{--era:#aacff1}
 .era-bangladesh{--era:#8fdac3}
-.era::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;border-radius:2px;background:var(--era);transform-origin:left center}
-.era-name{position:absolute;top:-14px;left:0}
 .era-name span{display:inline-block;padding:3px 10px;border-radius:4px;background:var(--era);color:#0e3234;font:800 12px/1.5 Montserrat,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase}
-.era-items{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:16px;margin-top:16px}
-.era-item{position:relative;padding-top:4px}
-.era-item::before{content:"";position:absolute;left:0;top:-24px;width:12px;height:12px;border-radius:50%;background:#0e3234;border:3px solid var(--era)}
+.era-items{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:22px;margin-top:16px}
+.era-item{position:relative}
+.era-item+.era-item::before{content:"";position:absolute;left:-11px;top:2px;bottom:2px;width:1px;background:#ffffff1f}
 .era-when{display:block;font:800 30px/1 Montserrat,Arial,sans-serif;letter-spacing:-.04em;color:var(--era)}
 .era-when small{margin-left:6px;font:700 12px Lato,Arial,sans-serif;letter-spacing:0;color:#c9ded7}
+.era-result .era-when small{color:#4c6361}
 .era-item h3{margin-top:10px;font-size:16px;line-height:1.35;color:#f4faf7}
-.era-item h3 a{color:inherit}
+.era-item h3 a,.era-root h3 a{color:inherit}
 .era-item>.sec{display:inline-block;margin:6px 0 0;color:#c9ded7;background:#ffffff14;border-color:#ffffff2e}
 .era-item p{margin-top:6px;font-size:14px;line-height:1.6;color:#cfe3dc}
-.era-now{padding:12px 14px 14px;border:1px solid #8fdac366;border-radius:12px;background:#8fdac314}
-.era-now::before{left:14px}
-.js .era::before{animation:thread-draw 900ms var(--ease) both}
-.js .era-pakistan::before{animation-delay:260ms}
-.js .era-bangladesh::before{animation-delay:520ms}
-.js .era-item{animation:station-rise 560ms var(--ease) both}
-.js .era-pakistan .era-item{animation-delay:280ms}
-.js .era-bangladesh .era-item{animation-delay:540ms}
+.era-root p{line-height:1.6;color:#cfe3dc}
+.era-result p{line-height:1.6}
+/* The connections: a line from the code into each era, and from each era into today. */
+.era::before,.era::after{content:"";position:absolute;left:50%;width:3px;height:56px;margin-left:-1.5px;border-radius:2px;transform-origin:top}
+.era::before{bottom:calc(100% + 1px);background:linear-gradient(#f2ca92,var(--era))}
+.era::after{top:calc(100% + 1px);background:linear-gradient(var(--era),#f4faf7)}
+.era-root{--d:0ms}.era-colonial{--du:240ms;--d:380ms;--dd:700ms}.era-pakistan{--du:280ms;--d:440ms;--dd:740ms}.era-bangladesh{--du:320ms;--d:500ms;--dd:780ms}.era-result{--d:900ms}
 /* Then and now: two panels, hinged by what connects them. */
 .then-now{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:18px;align-items:stretch}
 .tn{padding:26px 26px 24px;border:1px solid;border-radius:14px}
@@ -665,14 +685,20 @@ span.jurisdiction .flags,.juris-name .flags{margin-right:8px}
 .bench-two{grid-template-columns:repeat(2,minmax(0,1fr))}
 .world-line{margin-top:30px;padding-top:24px;border-top:1px solid var(--line);font-weight:400;color:var(--ink-soft)}
 @media(max-width:1100px){
-  .era-rail{grid-template-columns:1fr;gap:34px;max-width:720px}
-  .era{padding:0 0 0 26px}
-  .era::before{left:0;right:auto;top:0;bottom:0;width:4px;height:auto;transform-origin:top center}
-  .js .era::before{animation-name:thread-drop}
-  .era-name{position:static}
-  .era-items{grid-auto-flow:row;gap:22px;margin-top:16px}
-  .era-item::before{left:-30px;top:8px}
-  .era-now::before{left:-30px}
+  /* One column: the code's line runs down the left, branching into each indented era. */
+  .era-rail{grid-template-columns:minmax(0,1fr);grid-template-rows:none;gap:18px;max-width:720px}
+  .era-rail::before{content:"";position:absolute;left:30.5px;top:40px;bottom:40px;width:3px;border-radius:2px;background:#f2ca92;transform-origin:top}
+  .era-root,.era-result,.era{grid-area:auto}
+  .era-root,.era-result{grid-template-columns:minmax(0,1fr);grid-template-areas:"w" "t" "p";padding:20px 20px 22px}
+  .era-root .era-when,.era-result .era-when{font-size:36px}
+  .era-root h3,.era-result h3{margin-top:10px}
+  .era-root p,.era-result p{margin-top:6px;font-size:15px}
+  .era{margin-left:64px}
+  .era::before{left:auto;right:calc(100% + 1px);bottom:auto;top:30px;width:32px;height:3px;margin:0;background:#f2ca92;transform-origin:left}
+  .era::after{display:none}
+  .era-items{grid-auto-flow:row;gap:20px}
+  .era-item+.era-item::before{left:0;right:0;top:-10px;bottom:auto;width:auto;height:1px}
+  .era-rail{--dl:200ms}.era-colonial{--du:420ms;--d:480ms}.era-pakistan{--du:540ms;--d:600ms}.era-bangladesh{--du:660ms;--d:720ms}.era-result{--d:860ms}
   .then-now{grid-template-columns:1fr}
   .tn-hinge span{flex-direction:row;max-width:none}
   .tn-hinge svg{transform:rotate(90deg)}
@@ -684,6 +710,8 @@ span.jurisdiction .flags,.juris-name .flags{margin-right:8px}
 }
 @media(max-width:767px){
   .era-band{padding-block:44px 52px}
+  .era{margin-left:48px;padding:16px 16px 18px}
+  .era::before{width:16px}
   .carries{grid-template-columns:1fr;grid-template-areas:"a" "b" "c" "p"}
   .carry-dissent{padding:24px 20px}
   .tn{padding:22px 18px 20px}
@@ -691,4 +719,17 @@ span.jurisdiction .flags,.juris-name .flags{margin-right:8px}
   .lineage-fig figcaption>p:last-child{padding-left:0}
   .origin-line,.world-line{font-size:16px}
 }
-@media(prefers-reduced-motion:reduce){.js .era::before,.js .era-item{animation:none}}
+
+/* ---------- layered charts ([data-draw]) draw once, when first seen ----------
+   Hidden only on screen, with motion allowed, and once the page's inline script has marked it scripted, so nothing is
+   hidden without JavaScript, in print or with reduced motion. If site.js never runs, a 3s failsafe shows everything. */
+@media screen and (prefers-reduced-motion:no-preference){
+  .js [data-draw]:not(.is-drawn) .lyr{opacity:0;transform:translateY(14px)}
+  .js [data-draw]:not(.is-drawn)::before,.js [data-draw]:not(.is-drawn) .lyr::before,.js [data-draw]:not(.is-drawn) .lyr::after{transform:scale(0)}
+  .js:not(.ready) [data-draw]:not(.is-drawn) .lyr,.js:not(.ready) [data-draw]:not(.is-drawn)::before,.js:not(.ready) [data-draw]:not(.is-drawn) .lyr::before,.js:not(.ready) [data-draw]:not(.is-drawn) .lyr::after{animation:draw-failsafe 0s 3s forwards}
+  .is-drawn .lyr{transition:opacity 480ms var(--ease),transform 600ms var(--ease);transition-delay:var(--d,0ms)}
+  .is-drawn::before{transition:transform 640ms var(--ease) var(--dl,0ms)}
+  .is-drawn .lyr::before{transition:transform 460ms var(--ease) var(--du,0ms)}
+  .is-drawn .lyr::after{transition:transform 460ms var(--ease) var(--dd,0ms)}
+}
+@keyframes draw-failsafe{to{opacity:1;transform:none}}

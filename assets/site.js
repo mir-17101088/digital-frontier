@@ -36,10 +36,87 @@ if (folds.length) {
   addEventListener('hashchange', () => openTo(location.hash));
   addEventListener('beforeprint', () => folds.forEach(fold => { fold.open = true; }));
 }
+// Layered charts draw once, when first seen. Their hidden state is CSS, keyed to the class the page's inline script sets
+// before the first paint; if this script arrives after the 3s failsafe has already shown them, they simply stay shown.
+const charts = [...document.querySelectorAll('[data-draw]')];
+if (charts.length) {
+  const draw = chart => chart.classList.add('is-drawn');
+  if (motionPreference.matches || !('IntersectionObserver' in window) || performance.now() > 2900) charts.forEach(draw);
+  else {
+    const io = new IntersectionObserver(entries => entries.forEach(entry => {
+      if (entry.isIntersecting) { draw(entry.target); io.unobserve(entry.target); }
+    }), {rootMargin:'0px 0px -10% 0px', threshold:.12});
+    charts.forEach(chart => io.observe(chart));
+  }
+}
 requestAnimationFrame(() => requestAnimationFrame(() => root.classList.add('ready')));
+
+// Start with your digital life. On a phone the situations are an accordion. On a wide screen the list stays put and the
+// open situation's answer sits beside it, level with the situation chosen, so the page keeps its height and switching
+// is instant. There one situation is always open: the one the address points to, or else the first.
+const strands = document.querySelector('.strands');
+if (strands) {
+  const wide = matchMedia('(min-width: 1024px)');
+  const situations = [...strands.querySelectorAll('.situation-more')];
+  let current = null;
+  const place = () => {
+    if (!current || !strands.classList.contains('split')) return;
+    const answer = current.querySelector('.situation-answer'), summary = current.querySelector('summary');
+    const box = strands.getBoundingClientRect(), item = summary.getBoundingClientRect(), strand = current.closest('.strand').getBoundingClientRect();
+    const height = answer.offsetHeight, list = strands.lastElementChild.getBoundingClientRect().bottom - box.top;
+    let top = item.top - box.top;
+    // Lift it if it would run below the screen, though never under the header or above the list.
+    const below = item.top + height - (innerHeight - 24);
+    if (below > 0) top -= Math.min(below, Math.max(0, item.top - 92));
+    top = Math.max(0, Math.min(top, list - height));
+    strands.style.minHeight = height > list ? height + 'px' : '';
+    answer.style.top = Math.round(top - (strand.top - box.top)) + 'px';
+    answer.style.setProperty('--notch', Math.round(Math.max(22, Math.min(height - 22, item.top - box.top + item.height / 2 - top))) + 'px');
+  };
+  const show = (detail, animate) => {
+    if (current && current !== detail) current.open = false;
+    current = detail; detail.open = true;
+    place();
+    if (!animate || motionPreference.matches || root.classList.contains('keyboard-input')) return;
+    const answer = detail.querySelector('.situation-answer');
+    answer.getAnimations().forEach(animation => animation.cancel());
+    answer.animate([{opacity:0, transform:'translateX(-8px)'}, {opacity:1, transform:'none'}], {duration:220, easing:EASE});
+  };
+  const setMode = () => {
+    strands.classList.toggle('split', wide.matches);
+    if (wide.matches) {
+      const open = situations.filter(detail => detail.open);
+      open.slice(1).forEach(detail => { detail.open = false; });
+      show(open[0] || situations[0], false);
+    } else {
+      current = null; strands.style.minHeight = '';
+      situations.forEach(detail => detail.querySelector('.situation-answer').style.removeProperty('top'));
+    }
+  };
+  strands.addEventListener('click', event => {
+    const summary = event.target.closest('.situation-more > summary');
+    if (!summary || !strands.classList.contains('split')) return;
+    event.preventDefault();
+    if (summary.parentElement !== current) show(summary.parentElement, true);
+  });
+  wide.addEventListener('change', setMode);
+  // Anything else that opens a situation (the browser's find-in-page does) makes it the one shown beside the list.
+  situations.forEach(detail => detail.addEventListener('toggle', () => {
+    if (detail.open && detail !== current && strands.classList.contains('split')) show(detail, false);
+  }));
+  // A link to a situation on this page opens it, in either layout.
+  addEventListener('hashchange', () => {
+    const detail = find(location.hash)?.closest('.situation')?.querySelector('.situation-more');
+    if (!detail) return;
+    if (strands.classList.contains('split')) show(detail, true); else detail.open = true;
+  });
+  setMode();
+  if ('ResizeObserver' in window) new ResizeObserver(() => place()).observe(strands);
+}
+
 document.querySelectorAll('.rec-item, .situation-more').forEach(detail => {
   detail.addEventListener('toggle', () => {
-    if (!detail.open || motionPreference.matches || root.classList.contains('keyboard-input')) return;
+    if (!detail.open || motionPreference.matches || root.classList.contains('keyboard-input') || detail.closest('.split')) return;
     const content = detail.querySelector(':scope > div');
     content?.getAnimations().forEach(animation => animation.cancel());
     content?.animate([{opacity:0,transform:'translateY(-6px)'},{opacity:1,transform:'none'}],{duration:260,easing:EASE});
@@ -47,16 +124,16 @@ document.querySelectorAll('.rec-item, .situation-more').forEach(detail => {
 });
 
 // Sections arrive in reading order: each group rises into place once, the first time it is seen.
-const revealable = [...document.querySelectorAll('.beat, .strand, .laws-section tbody.rated tr, .connection-story')];
+const revealable = [...document.querySelectorAll('.beat, .strand, .connection-story')];
 if (revealable.length && !motionPreference.matches && 'IntersectionObserver' in window) {
   const io = new IntersectionObserver(entries => entries.forEach(entry => {
     if (!entry.isIntersecting) return;
     const element = entry.target;
     element.classList.add('revealed'); io.unobserve(element);
-    // Once risen, hand the element back to its own hover transitions.
-    const done = event => { if (event.target !== element) return; element.classList.remove('will-reveal', 'revealed'); element.removeEventListener('transitionend', done); };
+    // Once risen (the transform is the longer of the two transitions), hand the element back to its own hover transitions.
+    const done = event => { if (event.target !== element || event.propertyName !== 'transform') return; element.classList.remove('will-reveal', 'revealed'); element.removeEventListener('transitionend', done); };
     element.addEventListener('transitionend', done);
-  }), {rootMargin:'0px 0px -6% 0px', threshold:.08});
+  }), {rootMargin:'0px 0px -4% 0px', threshold:.04});
   revealable.forEach(element => {
     const index = [...element.parentElement.children].indexOf(element);
     element.style.setProperty('--i', Math.min(index, 8));
@@ -75,6 +152,10 @@ if (connectionStories && !motionPreference.matches && 'IntersectionObserver' in 
   },{threshold:.18});
   observer.observe(connectionStories);
 }
+
+// The hero art floats and pulses only while the hero is on screen; off screen its animations pause.
+const hero = document.querySelector('.hero'), heroArt = hero?.querySelector('.hero-art');
+if (heroArt && 'IntersectionObserver' in window) new IntersectionObserver(([entry]) => heroArt.classList.toggle('is-off', !entry.isIntersecting)).observe(hero);
 
 // Back to top: shown once the reader is most of a screen down. Its ring shows how far through the page they are.
 const toTop = document.createElement('button');
@@ -340,7 +421,12 @@ if (network) {
     if (!target) return;
     select(target); setSheet('closed'); land(target);
   });
-  new ResizeObserver(() => draw()).observe(stage);
+  // Redraw the lines only when the stage really changes size (the observer also reports once on start, after draw()).
+  let stageSize = `${stage.offsetWidth}x${stage.offsetHeight}`;
+  new ResizeObserver(() => {
+    const size = `${stage.offsetWidth}x${stage.offsetHeight}`;
+    if (size !== stageSize) { stageSize = size; draw(); }
+  }).observe(stage);
 }
 
 // Video is optional. A build-time manifest prevents requests for absent files.
