@@ -256,6 +256,9 @@ sup.sec{margin-left:3px;vertical-align:.5em;line-height:0}
 .split .situation-more[open]>summary::after{opacity:1;color:var(--s);transform:translateX(3px) rotate(45deg)}
 .split .situation-more::details-content{transition:none}
 .split .situation-answer{position:absolute;left:calc(var(--list) + 44px);right:0;top:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:22px;padding:26px 28px 24px;border-radius:18px;background:#fbfdfc;color:var(--ink);box-shadow:0 0 0 2px var(--s-bright),0 28px 60px #04161773}
+/* The answer often runs down past its own strand, and every strand is positioned: the strand holding it (site.js) sits
+   above the strands after it, or their empty boxes would take the clicks meant for its links. */
+.split .strand.holds-answer{z-index:1}
 .split .situation-answer::before{content:"";position:absolute;left:-8px;top:calc(var(--notch,40px) - 8px);width:16px;height:16px;border-radius:3px;background:#fbfdfc;box-shadow:-2px 2px 0 0 var(--s-bright);transform:rotate(45deg)}
 .split .situation-answer>.stake,.split .situation-answer>.answer-law,.split .situation-answer>.pf{grid-column:1/-1}
 .split .situation-answer .pf{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
@@ -658,6 +661,8 @@ sup.sec{margin-left:3px;vertical-align:.5em;line-height:0}
   .brand-name{display:none}
   .actions{flex-direction:column;align-items:stretch}
 }
+/* Below 340px "Management" and "Pornography" are wider than the name column and ran onto their first tile. */
+@media(max-width:339px){.heatmap thead th{width:60px}}
 @supports not (backdrop-filter:blur(10px)){.site-header{background:#f5f7f4}}
 @media(prefers-reduced-transparency:reduce){.site-header{background:#f5f7f4;backdrop-filter:none;-webkit-backdrop-filter:none}}
 @media(prefers-reduced-motion:reduce){

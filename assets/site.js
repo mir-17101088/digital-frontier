@@ -73,10 +73,13 @@ if (strands) {
     answer.style.top = Math.round(top - (strand.top - box.top)) + 'px';
     answer.style.setProperty('--notch', Math.round(Math.max(22, Math.min(height - 22, item.top - box.top + item.height / 2 - top))) + 'px');
   };
+  // The answer hangs beside the list and often runs down past its own strand. Every strand is positioned, so a later
+  // strand's empty box would sit over that part of the answer and take its clicks: the strand holding it goes on top.
+  const raise = () => strands.querySelectorAll('.strand').forEach(strand => strand.classList.toggle('holds-answer', !!current && strand.contains(current)));
   const show = (detail, animate) => {
     if (current && current !== detail) current.open = false;
     current = detail; detail.open = true;
-    place();
+    raise(); place();
     if (!animate || motionPreference.matches || root.classList.contains('keyboard-input')) return;
     const answer = detail.querySelector('.situation-answer');
     answer.getAnimations().forEach(animation => animation.cancel());
@@ -89,7 +92,7 @@ if (strands) {
       open.slice(1).forEach(detail => { detail.open = false; });
       show(open[0] || situations[0], false);
     } else {
-      current = null; strands.style.minHeight = '';
+      current = null; strands.style.minHeight = ''; raise();
       situations.forEach(detail => detail.querySelector('.situation-answer').style.removeProperty('top'));
     }
   };
